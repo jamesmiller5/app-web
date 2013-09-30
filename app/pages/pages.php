@@ -111,8 +111,8 @@ class Graph extends Page {
 	function render() {
 		echo <<<HTML
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-<script src="springy.js"></script>
-<script src="springyui.js"></script>
+<script src="/js/springy.js"></script>
+<script src="/js/springyui.js"></script>
 <script>
 var graph = new Springy.Graph();
 
@@ -151,7 +151,8 @@ jQuery(function(){
 });
 </script>
 		
-		<canvas id="springydemo" width="640" height="480" />
+		<canvas id="springydemo" width="640" height="480" >
+		</canvas>
 HTML;
 	}
 }
