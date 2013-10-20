@@ -1,5 +1,5 @@
-#!/bin/sh
-sqlite3 database.sqlite <<CREATETABLES
+#!/bin/bash
+sqlite3 -batch $PWD/database.sqlite <<CREATETABLES
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS user( 
