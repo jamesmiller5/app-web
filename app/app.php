@@ -3,6 +3,20 @@ session_start();
 ob_start();
 error_reporting( E_ALL | E_STRICT );
 
+//make all errors into exceptions
+function exception_error_handler( $errno, $errstr, $errfile, $errline ) {
+	throw new ErrorException( $errstr, 0, $errno, $errfile, $errline );
+}
+set_error_handler("exception_error_handler");
+
+function decho( $vars, $title=null ) {
+	echo ($title) ? "<h1>".$title."</h1>" : null,"<pre>";
+	var_dump( $vars );
+	echo "</pre>";
+	die();
+}
+
+
 //General Functions
 function define_constants() {
 	//APPDIR is the directory where this file resides
@@ -96,8 +110,11 @@ class Session {
 class DB {
 	private static $pdo;
 
-	function setup() {
+	static function setup() {
 		//create PDO
+		if( !is_readable( APPDIR . "/database.sqlite" ) )
+			throw new Exception("No database.sqlite, run create-database.sh");
+
 		DB::$pdo = new PDO( "sqlite:" . APPDIR . "/database.sqlite", "", "" );
 		DB::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -105,7 +122,7 @@ class DB {
 		DB::$pdo->exec("PRAGMA foreign_keys = ON;");
 	}
 
-	function getPDO() {
+	static function getPDO() {
 		if( !DB::$pdo ) {
 			DB::setup();
 		}
