@@ -1,20 +1,27 @@
 <?php
 require realpath( dirname( __FILE__ ) . '/../app/app.php' );
-//test user adds
 
-echo "<pre>";
+//include all our classes
+require APPDIR . "app/data-classes.php";
 
-$makeme = new User;
-$makeme->password = "hasfkl";
-var_dump($makeme->store());
-var_dump($makeme);
+//include Request
+require APPDIR . "app/Request.class.php";
 
-$user = new User;
+//include Router
+require APPDIR . "app/Router.class.php";
 
-var_dump($user->load(1));
-$user->password = "blah";
-var_dump($user);
+//include Pages
+require APPDIR . "app/pages/Page.class.php";
+require APPDIR . "app/pages/pages.php";
 
-var_dump($GLOBALS);
+//Load Session data
+Session::load();
 
+//Make a new Request
+$request = new Request();
+$request->importSuperGlobals();
+$request->exportSuperGlobals();
+
+//Route our Request
+Router::getDefault()->route( $request );
 ?>

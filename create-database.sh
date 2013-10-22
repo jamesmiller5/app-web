@@ -1,5 +1,6 @@
 #!/bin/bash
-sqlite3 -batch $PWD/database.sqlite <<CREATETABLES
+APPDIR=$(dirname $(readlink -f $0))
+sqlite3 -batch "$APPDIR/database.sqlite" <<CREATETABLES
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE IF NOT EXISTS user( 
