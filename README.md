@@ -7,7 +7,8 @@ Setup
 =====
 
 Create a "config.ini" in the root directory. If you are running the webserver from command line with a specific port use this the config:
--- Config.ini --
+	
+	--config.ini--
 	[app]
 		path="/"
 
