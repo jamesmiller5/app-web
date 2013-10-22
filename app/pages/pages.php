@@ -6,9 +6,9 @@ class Index extends Page {
 	}
 
 	function render() {
-?>
+		echo <<<HTML
 		<h1> Hi this is the Index Page </h1>
-<?php
+HTML;
 	}
 }
 //register this class as the default page aka '/'
@@ -45,25 +45,27 @@ class Login extends Page {
 	}
 
 	function logoutPage() {
-?>
+		echo <<<HTML
 		<h1> All logged out! </h1>
-<?php
+HTML;
 	}
 
 	function loginPage() {
-?>
+		echo <<<HTML
 		<h1> Hi this is the Login page </h1>
-<?php
+HTML;
 		if( $this->badLogin ) {
 			Page::alert("Bad Login");
 		}
-?>
-		<form method="post">
+
+		//use URLPATH in front of URL's or else links will break when we host from "/~mille168/" vs "/" vs "/some/subdir"
+		echo <<<HTML
+		<form method="post" action="{URLPATH}login">
 			<label for="u">Username:</label><input type="text" id="u" name="username" />
 			<label for="p">Password:</label><input type="password" id="p" name="password" />
 			<input type="submit" />
 		</form>
-<?php
+HTML;
 	}
 }
 Router::getDefault()->register( "/login", new Login() );

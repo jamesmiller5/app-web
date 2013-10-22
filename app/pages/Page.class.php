@@ -12,7 +12,7 @@ class Page {
 
 	//header is a php function
 	function head() {
-?>
+		echo <<<HTML
 <!doctype html>
 <html>
 	<head>
@@ -23,35 +23,38 @@ class Page {
 		<section>
 			<header>
 				<h1>My Site</h1>
-				<?php $this->loginBox(); ?>
+HTML;
+				$this->loginBox();
+		echo <<<HTML
 			</header>
-<?php
+HTML;
 	}
 
 	function foot() {
-?>
+		echo <<<HTML
 			<footer><p>Copyright No One but me</p></footer>
 		</section>
 	</body>
 </html>
-<?php
+HTML;
 	}
 
 	function loginBox() {
 		if( !isset( Session::$user ) ) {
-?>
+			echo <<<HTML
 			<p><a href="login">Login</a></p>
-<?php
+HTML;
 		} else {
-?>
+			echo <<<HTML
 			<p><a href="login?logout">Logout</a></p>
-<?php
+HTML;
 		}
 	}
 
 	function alert( $title ) {
-?>
-	<h2><?=htmlentities($title)?></h2>
-<?php
+		$title = htmlentities(trim($title));
+		echo <<<HTML
+		<h2>{$title}</h2>
+HTML;
 	}
 }
