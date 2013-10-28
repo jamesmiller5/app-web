@@ -43,7 +43,7 @@ class Session {
 		session_destroy();
 	}
 
-	function setUser(User $user) {
+	static function setUser(User $user) {
 		if( (int)$user->id == 0 ) {
 			throw new Exception("User->id == 0" );
 		}
@@ -51,7 +51,7 @@ class Session {
 		Session::$user = $user;
 	}
 
-	function getUser() {
+	static function getUser() {
 		return Session::$user;
 	}
 }
@@ -98,8 +98,26 @@ class User {
 			$this->id = (int)DB::getPDO()->lastInsertId();
 	}
 
-	static function login( $username, $password ) {
-		//do query
+	static function login( $email, $password ) {
+		//do query	
+		//fetch the results and set our instance variables to them
+		$statement = DB::getPDO()->prepare(
+			"SELECT id FROM user WHERE email = :email AND password = :password"
+		);
+		$statement->execute( array(
+			":email" => $email,
+			":password" => $password,
+		) );
+		
+		$ret = $statement->fetch();
+		if( $ret ) {
+			//$ret['id'] is the id we want
+			$user = new User();
+			if( $user->load($ret['id']) ) {
+				return $user;
+			}
+		}
+
 		return null;
 	}
 }
