@@ -10,9 +10,9 @@ class Index extends Page {
 
 		$name = "";
 		if( $user ) {
-			decho($user, "user");
 			$name = $user->email;
 		}
+
 		echo <<<HTML
 		<h1> Hi "{$name}", this is the Index Page</h1>
 HTML;
@@ -90,7 +90,7 @@ class Test extends Page {
 	function render() {
 		$email  = "";
 		$user = User::login("foo@bar","number");
-		if( $user ) 
+		if( $user )
 			$email = htmlentities($user->email);
 		echo <<<HTML
 		<h1> Hi this is the Test Page id:"{$email}" </h1>

@@ -4,10 +4,10 @@ class DB {
 
 	static function setup() {
 		//create PDO
-		if( !is_readable( APPDIR . "/database.sqlite" ) )
+		if( !is_readable( APPDIR . "database.sqlite" ) )
 			throw new Exception("No database.sqlite, run create-database.sh");
 
-		DB::$pdo = new PDO( "sqlite:" . APPDIR . "/database.sqlite", "", "" );
+		DB::$pdo = new PDO( "sqlite:" . APPDIR . "database.sqlite", "", "" );
 		DB::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 		//enable foreign_key support
@@ -27,15 +27,23 @@ class Session {
 
 	/* Load any needed data, check $_SESSION variable to see what can be loaded*/
 	static function load() {
-		if (session_status() == PHP_SESSION_NONE) {
-			  session_start();
+		if( session_status() == PHP_SESSION_NONE) {
+			session_start();
+		}
+
+		if( session_status() != PHP_SESSION_ACTIVE ) {
+			return false;
 		}
 
 		if( isset( $_SESSION ) ) {
 			if( isset( $_SESSION['user_id'] ) ) {
-				Session::$user = new User($_SESSION['user_id']);
+				$user = new User();
+				$user->load( $_SESSION['user_id'] );
+				Session::setUser($user);
 			}
 		}
+
+		return true;
 	}
 
 	static function destroy() {
@@ -99,7 +107,7 @@ class User {
 	}
 
 	static function login( $email, $password ) {
-		//do query	
+		//do query
 		//fetch the results and set our instance variables to them
 		$statement = DB::getPDO()->prepare(
 			"SELECT id FROM user WHERE email = :email AND password = :password"
@@ -108,7 +116,7 @@ class User {
 			":email" => $email,
 			":password" => $password,
 		) );
-		
+
 		$ret = $statement->fetch();
 		if( $ret ) {
 			//$ret['id'] is the id we want

@@ -1,5 +1,5 @@
 #!/bin/bash
-APPDIR=$(dirname $(readlink -f $0))
+APPDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../" && pwd )"
 sqlite3 -batch "$APPDIR/database.sqlite" <<CREATETABLES
 PRAGMA foreign_keys = ON;
 

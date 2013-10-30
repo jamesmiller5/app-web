@@ -40,7 +40,7 @@ HTML;
 	}
 
 	function loginBox() {
-		if( !isset( Session::$user ) ) {
+		if( Session::getUser() == null ) {
 			echo <<<HTML
 			<p><a href="login">Login</a></p>
 HTML;

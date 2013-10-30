@@ -50,37 +50,35 @@ class Request extends ArrayObject {
 	}
 
 	function exportSuperGlobals() {
-		//point super globals to our objects mimicing natural behavior
-		//must be reference due to magic
 		if( isset( $this->request ) )
-			$_REQUEST = &$this->request;
+			$_REQUEST = $this->request;
 
 		if( isset( $this->get ) )
-			$_GET = &$this->get;
+			$_GET = $this->get;
 
 		if( isset( $this->post ) )
-			$_POST = &$this->post;
+			$_POST = $this->post;
 
 		if( isset( $this->put ) )
-			$GLOBALS['_PUT'] = &$this->put;
+			$GLOBALS['_PUT'] = $this->put;
 
 		if( isset( $this->delete ) )
-			$GLOBALS['_DELETE'] = &$this->delete;
+			$GLOBALS['_DELETE'] = $this->delete;
 
 		if( isset( $this->files ) )
-			$_FILES = &$this->files;
+			$_FILES = $this->files;
 
 		if( isset( $this->cookie ) )
-			$_COOKIE = &$this->cookie;
+			$_COOKIE = $this->cookie;
 
 		if( isset( $this->session ) )
-			$_SESSION = &$this->session;
+			$_SESSION = $this->session;
 
 		if( isset( $this->server ) )
-			$_SERVER = &$this->server;
+			$_SERVER = $this->server;
 
 		if( isset( $this->env ) )
-			$_ENV = &$this->env;
+			$_ENV = $this->env;
 	}
 
 	function importSuperGlobals() {
