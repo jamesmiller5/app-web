@@ -100,3 +100,41 @@ HTML;
 //register this class as the default page aka '/'
 Router::getDefault()->register( "/test", new Test() );
 
+class Register extends Page {
+	function handle(Request $request) {
+		if( isset( $request->post ) ) {
+			//register email, send claimtoken
+			$to = $request->post['email'];
+			$subject = "Test mail";
+			$message = "Hello! This is a simple email message.";
+			$from = "no-reply@app.com";
+			$headers = "From:" . $from;
+			mail($to,$subject,$message,$headers);
+			echo <<<HTML
+			<p> Mail Sent. Please check your email for instructions. </p>
+HTML;
+			
+		}
+
+		//no errors? lets render!
+		parent::headAndFoot( function() { $this->render(); } );
+	}
+	
+	function render() {
+				echo <<<HTML
+		<h1> Hi this is the Register page </h1>
+HTML;
+
+		//use URLPATH in front of URL's or else links will break when we host from "/~mille168/" vs "/" vs "/some/subdir"
+		$URLPATH = URLPATH;
+		echo <<<HTML
+		<form method="post" action="{$URLPATH}register">
+			<label for="u">Email:</label><input type="text" id="u" name="email" />
+			<label for="p">Password:</label><input type="password" id="p" name="password" />
+			<input type="submit" />
+		</form>
+HTML;
+	}
+}
+//register this class as the default page aka '/'
+Router::getDefault()->register( "/register", new Register() );
