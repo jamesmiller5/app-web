@@ -1,3 +1,4 @@
 *.sqlite
 *.sw?
 config.ini
+*.DS_Store
