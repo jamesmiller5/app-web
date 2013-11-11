@@ -9,6 +9,11 @@ create table if not exists User(
   password string not null
 );
 
+create table if not exists Email(
+  address string primary key,
+  token string not null
+  );
+
 create table if not exists Citation(
   id integer primary key autoincrement,
   subject string not null,

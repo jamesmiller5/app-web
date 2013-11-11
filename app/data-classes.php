@@ -66,6 +66,7 @@ class Session {
 
 class User {
 	public $id;
+	public $email;
 	public $password;
 
 	function load($id) {
@@ -88,7 +89,7 @@ class User {
 		if( (int)$this->id == 0 ) {
 			$this->id = null;
 			$statement = DB::getPDO()->prepare(
-				"INSERT INTO user VALUES (:id, :password);"
+				"INSERT INTO user VALUES (:id, :email, :password);"
 			);
 		} else {
 			$statement = DB::getPDO()->prepare(
@@ -98,6 +99,7 @@ class User {
 
 		$ret = $statement->execute( array(
 			":id" => $this->id,
+			":email" => $this->email,
 			":password" => $this->password,
 		) );
 
