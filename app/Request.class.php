@@ -140,4 +140,22 @@ class Request extends ArrayObject {
 
 		return $rarray;
 	}
+
+	static function redirect( $url, $condition = "post" ) {
+		//See http://www.faqs.org/rfcs/rfc2616.html section on 301-303, brief and explains this well
+		switch( $condition ) {
+			case "permanent":
+				header("Location: " . $url, true, 301);
+				break;
+			case "post":
+				header("Location: " . $url, true, 303);
+				break;
+			default:
+			case "temporary":
+				header("Location: " . $url, true, 302);
+				break;
+		}
+
+		exit(0);
+	}
 }
