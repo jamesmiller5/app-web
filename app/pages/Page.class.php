@@ -33,7 +33,7 @@ class Page {
 
 		<nav class="top-bar large-11 columns large-centered" style="">
 HTML;
-		if( !isset( Session::$user ) ) {
+		if( Session::getUser() == NULL ) {
 			$this->loginBox();
 		} else {
 			$this->navBar();
@@ -70,20 +70,21 @@ HTML;
 	}
 
 	function loginBox() {
+		$URLPATH = URLPATH;
 		echo <<<HTML
 		  <section class="top-bar-section" style="left: 0%;">
             <!-- Login Field -->
             <ul class="right">
-            	<form>
+            	<form method="post" action="{$URLPATH}login">
             		<div class="small-5 columns">
-            			<input type="text" placeholder="Email">
+            			<input type="text" placeholder="Email" name="email" >
             		</div>
 
             		<div class="small-5 columns">
-        				<input type="text" placeholder="Password">
+        				<input type="password" placeholder="Password" name="password">
         			</div>
             		<div class="small-2 columns">
-            			<a href="login" class="button">Login</a>
+            			<input type="submit" class="button">Login</input>
             		</div>
             	</form>
             </ul>
