@@ -12,39 +12,39 @@ class Graph extends Page {
 <script src="/js/springy.js"></script>
 <script src="/js/springyui.js"></script>
 <script>
-var graph = new Springy.Graph();
-
-var dennis = graph.newNode({
-  label: 'Dennis',
-  ondoubleclick: function() { console.log("Hello!"); }
-});
-var michael = graph.newNode({label: 'Michael'});
-var jessica = graph.newNode({label: 'Jessica'});
-var timothy = graph.newNode({label: 'Timothy'});
-var barbara = graph.newNode({label: 'Barbara'});
-var franklin = graph.newNode({label: 'Franklin'});
-var monty = graph.newNode({label: 'Monty'});
-var james = graph.newNode({label: 'James'});
-var bianca = graph.newNode({label: 'Bianca'});
-
-graph.newEdge(dennis, michael, {color: '#00A0B0'});
-graph.newEdge(michael, dennis, {color: '#6A4A3C'});
-graph.newEdge(michael, jessica, {color: '#CC333F'});
-graph.newEdge(jessica, barbara, {color: '#EB6841'});
-graph.newEdge(michael, timothy, {color: '#EDC951'});
-graph.newEdge(franklin, monty, {color: '#7DBE3C'});
-graph.newEdge(dennis, monty, {color: '#000000'});
-graph.newEdge(monty, james, {color: '#00A0B0'});
-graph.newEdge(barbara, timothy, {color: '#6A4A3C'});
-graph.newEdge(dennis, bianca, {color: '#CC333F'});
-graph.newEdge(bianca, monty, {color: '#EB6841'});
+var graphJSON = {
+  "nodes": [
+    "Michael",
+    "Jessica",
+    "Timothy",
+    "Barbara",
+    "Franklin",
+    "Monty",
+    "James",
+    "Bianca",
+    "Dennis"
+  ],
+  "edges": [
+    ["Dennis", "Michael", {color: '#00A0B0'}],
+    ["Michael", "Dennis", {color: '#6A4A3C'}],
+    ["Michael", "Jessica", {color: '#CC333F'}],
+    ["Jessica", "Barbara", {color: '#EB6841'}],
+    ["Michael", "Timothy", {color: '#EDC951'}],
+    ["Franklin", "Timothy", {color: '#7DBE3C'}],
+    ["Dennis", "Monty", {color: '#000000'}],
+    ["Monty", "James", {color: '#00A0B0'}],
+    ["Barbara", "Timothy", {color: '#6A4A3C'}],
+    ["Dennis", "Bianca", {color: '#CC333F'}],
+    ["Bianca", "Monty", {color: '#EB6841'}]
+  ]
+};
 
 jQuery(function(){
-  var springy = window.springy = jQuery('#springydemo').springy({
-	graph: graph,
-	nodeSelected: function(node){
-	  console.log('Node selected: ' + JSON.stringify(node.data));
-	}
+  var graph = new Springy.Graph();
+  graph.loadJSON(graphJSON);
+
+  var springy = jQuery('#springydemo').springy({
+    graph: graph
   });
 });
 </script>
