@@ -48,8 +48,7 @@ jQuery(function(){
   });
 });
 </script>
-
-		<canvas id="springydemo" width="640" height="480" >
+		<canvas id="springydemo" width="640" height="480">
 		</canvas>
 HTML;
 	}

@@ -19,7 +19,7 @@ class Page {
 		<meta charset="utf-8">
   		<meta name="viewport" content="width=device-width">
  		<title>Trust Networks</title>
-  		<link rel="stylesheet" href="css/foundation.css">
+  		<link rel="stylesheet" href="css/foundation.min.css">
   		<script src="js/vendor/custom.modernizr.js"></script>
   		<script src="js/vendor/jquery.min.js"></script>
 	</head>
@@ -68,6 +68,7 @@ HTML;
 	}
 
 	function loginBox() {
+		$URLPATH = URLPATH;
 		echo <<<HTML
 		  <section class="top-bar-section" style="left: 0%;">
             <!-- Login Field -->
@@ -80,9 +81,9 @@ HTML;
             		<div class="small-5 columns">
         				<input type="text" placeholder="Password">
         			</div>
-            		<div class="small-2 columns">
-            			<a href="login" class="button">Login</a>
-            		</div>
+
+			<button type="submit" class="small-2 columns button">Login</input>
+            		
             	</form>
             </ul>
           </section>
