@@ -25,6 +25,7 @@ Router::getDefault()->register( "/", new Index() );
 require APPDIR . "app/pages/login.php";
 require APPDIR . "app/pages/verify.php";
 require APPDIR . "app/pages/register.php";
+require APPDIR . "app/pages/graph.php";
 
 //demo page, just a list of links
 class Demo extends Page {
