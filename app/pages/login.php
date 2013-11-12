@@ -15,6 +15,9 @@ class Login extends Page {
 			if( $user != null ) {
 				//set Session to this $user
 				Session::setUser( $user );
+
+				//redirect to index
+				$request->redirect("/");
 			} else {
 				$this->badLogin = true;
 			}
@@ -34,13 +37,14 @@ class Login extends Page {
 
 	function logoutPage() {
 		echo <<<HTML
-		<h1> All logged out! </h1>
+		<h1> Loggout </h1>
+		<h2> All logged out! </h2>
 HTML;
 	}
 
 	function loginPage() {
 		echo <<<HTML
-		<h1> Hi this is the Login page </h1>
+		<h1> Login </h1>
 HTML;
 		if( $this->badLogin ) {
 			Page::alert("Bad Login");
