@@ -34,8 +34,10 @@ var graphJSON = {
     ["Dennis", "Monty", {color: '#000000'}],
     ["Monty", "James", {color: '#00A0B0'}],
     ["Barbara", "Timothy", {color: '#6A4A3C'}],
-    ["Dennis", "Bianca", {color: '#CC333F'}],
-    ["Bianca", "Monty", {color: '#EB6841'}]
+    ["Michael", "Bianca", {color: '#CC333F'}],
+    ["Bianca", "Monty", {color: '#EB6841'}],
+    ["Michael", "Franklin", {color: '#EB6841'}],
+    ["Michael", "Barbara", {color: '#000000'}]
   ]
 };
 
