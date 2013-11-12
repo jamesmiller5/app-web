@@ -9,9 +9,9 @@ class Login extends Page {
 			Session::destroy();
 
 			$this->logout = true;
-		} else if( isset( $request->post ) ) {
+		} else if( isset( $request->post ) && isset( $request->post['email'] ) && isset( $request->post['password'] ) ) {
 			//attempt login
-			$user = User::login( $request->post['username'], $request->post['password'] );
+			$user = User::login( $request->post['email'], $request->post['password'] );
 			if( $user != null ) {
 				//set Session to this $user
 				Session::setUser( $user );
@@ -54,7 +54,7 @@ HTML;
 		$URLPATH = URLPATH;
 		echo <<<HTML
 		<form method="post" action="{$URLPATH}login">
-			<label for="u">Username:</label><input type="text" id="u" name="username" />
+			<label for="u">Email:</label><input type="text" id="u" name="email" />
 			<label for="p">Password:</label><input type="password" id="p" name="password" />
 			<input type="submit" />
 		</form>

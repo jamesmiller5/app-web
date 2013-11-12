@@ -12,16 +12,18 @@ class Page {
 
 	//header is a php function
 	function head() {
+		$ASSETS = "/assets/";
 		echo <<<HTML
 <!DOCTYPE html>
 <html>
 	<head>
+ 		<title>Trust Networks</title>
 		<meta charset="utf-8">
   		<meta name="viewport" content="width=device-width">
- 		<title>Trust Networks</title>
-  		<link rel="stylesheet" href="css/foundation.min.css">
-  		<script src="js/vendor/custom.modernizr.js"></script>
-  		<script src="js/vendor/jquery.min.js"></script>
+
+  		<link rel="stylesheet" href="{$ASSETS}css/foundation.min.css">
+  		<script src="{$ASSETS}js/vendor/custom.modernizr.js"></script>
+		<script src="{$ASSETS}js/vendor/jquery.min.js"></script>
 	</head>
 
 	<body>
@@ -34,7 +36,7 @@ class Page {
 
 		<nav class="top-bar large-11 columns large-centered" style="">
 HTML;
-		if( !isset( Session::$user ) ) {
+		if( Session::getUser() == NULL ) {
 			$this->loginBox();
 		} else {
 			$this->navBar();
@@ -47,6 +49,7 @@ HTML;
 	}
 
 	function foot() {
+		$ASSETS = "/assets/";
 		echo <<<HTML
 		</figure>
 	<footer class="row">
@@ -56,7 +59,7 @@ HTML;
 		</div>
 	</footer>
 
-  	<script src="js/foundation.min.js"></script>
+  	<script src="{$ASSETS}js/foundation.min.js"></script>
 
   	<script>
     	$(document).foundation();
@@ -75,15 +78,13 @@ HTML;
             <ul class="right">
             	<form method="post" action="{$URLPATH}login">
             		<div class="small-5 columns">
-            			<input type="text" placeholder="Email">
+            			<input type="text" placeholder="Email" name="email" >
             		</div>
 
             		<div class="small-5 columns">
-        				<input type="text" placeholder="Password">
+        				<input type="password" placeholder="Password" name="password">
         			</div>
-
 			<button type="submit" class="small-2 columns button">Login</input>
-            		
             	</form>
             </ul>
           </section>

@@ -9,12 +9,6 @@ class Trust extends Page {
 	}
 
 	function render() {
-		$user = Session::getUser();
-
-		$name = "";
-		if( $user ) {
-			$name = $user->email;
-		}
 
 		echo <<<HTML
 		<h1> Trust </h1>

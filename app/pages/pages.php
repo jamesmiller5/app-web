@@ -13,9 +13,18 @@ class Index extends Page {
 			$name = $user->email;
 		}
 
+		if( $name ) {
 		echo <<<HTML
 		<h1>Hi "{$name}", this is the Index Page</h1>
 HTML;
+		} else {
+		echo <<<HTML
+		<h1>Welcome to APP.</h1>
+		<h2>More functionality coming soon.</h2>
+		<p>Please login or register to continue</p>
+
+HTML;
+		}
 	}
 }
 //register this class as the default page aka '/'
