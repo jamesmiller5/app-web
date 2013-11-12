@@ -41,11 +41,13 @@ HTML;
 
 		echo <<<HTML
 		</nav>
+		<figure>
 HTML;
 	}
 
 	function foot() {
 		echo <<<HTML
+		</figure>
 	<footer class="row">
 		<div class="large-12 columns">
 			<hr />
@@ -74,7 +76,7 @@ HTML;
 		  <section class="top-bar-section" style="left: 0%;">
             <!-- Login Field -->
             <ul class="right">
-            	<form>
+            	<form method="post" action="{$URLPATH}login">
             		<div class="small-5 columns">
             			<input type="text" placeholder="Email">
             		</div>
