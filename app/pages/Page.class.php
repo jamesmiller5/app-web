@@ -95,6 +95,7 @@ HTML;
 	}
 
 	function navBar() {
+		$URLPATH = URLPATH;
 		echo <<<HTML
 		  <ul class="title-area hide-for-small">
             <!-- Title Area -->
@@ -119,7 +120,7 @@ HTML;
                   <li class=""><a href="#">Trust Network</a></li>
                 </ul>
               </li>
-              <li class="signout"<a href="login?logout">Logout</a></li>
+              <li class="signout"<a href="{$URLPATH}login?logout">Logout</a></li>
           </ul>
 HTML;
 	}
