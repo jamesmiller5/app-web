@@ -12,15 +12,16 @@ class Page {
 
 	//header is a php function
 	function head() {
+		$ASSETS = "/assets/";
 		echo <<<HTML
 <!DOCTYPE html>
 <html>
 	<head>
+ 		<title>Trust Networks</title>
 		<meta charset="utf-8">
   		<meta name="viewport" content="width=device-width">
- 		<title>Trust Networks</title>
-  		<link rel="stylesheet" href="css/foundation.css">
-  		<script src="js/vendor/custom.modernizr.js"></script>
+  		<link rel="stylesheet" href="{$ASSETS}css/foundation.min.css">
+  		<script src="{$ASSETS}js/vendor/custom.modernizr.js"></script>
 	</head>
 
 	<body>
@@ -45,6 +46,7 @@ HTML;
 	}
 
 	function foot() {
+		$ASSETS = "/assets/";
 		echo <<<HTML
 	<footer class="row">
 		<div class="large-12 columns">
@@ -54,11 +56,11 @@ HTML;
 	</footer>
  	<script>
   	document.write('<script src=' +
-  	('__proto__' in {} ? 'js/vendor/zepto' : 'js/vendor/jquery') +
+  	('__proto__' in {} ? '{$ASSETS}js/vendor/zepto' : '{$ASSETS}js/vendor/jquery') +
   	'.js><\/script>')
   	</script>
 
-  	<script src="js/foundation.min.js"></script>
+  	<script src="{$ASSETS}js/foundation.min.js"></script>
 
   	<script>
     	$(document).foundation();

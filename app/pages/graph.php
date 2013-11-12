@@ -7,10 +7,11 @@ class Graph extends Page {
 	}
 
 	function render() {
+		$ASSETS = "/assets/";
 		echo <<<HTML
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-<script src="/js/springy.js"></script>
-<script src="/js/springyui.js"></script>
+<script src="{$ASSETS}js/springy.js"></script>
+<script src="{$ASSETS}js/springyui.js"></script>
 <script>
 var graph = new Springy.Graph();
 
