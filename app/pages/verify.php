@@ -1,34 +1,42 @@
 <?php
 class Verify extends Page {
+	private $error = false;
+	private $success = false;
+
 	function handle(Request $request) {
 		if( isset( $request->post ) ) {
 			//todo
 			$userStmnt = DB::getPDO()->prepare(
 				"SELECT * FROM user WHERE email = ?"
 			);
-			$userStmnt->execute( array( $request->post['email'] ) );
+			$userStmnt->execute( array( trim($request->post['email']) ) );
 			$ret = $userStmnt->fetchAll();
 			if($ret) {
 				//user found, do not verify
-				print "error! user already exists";
-			}else {
+				$this->error = "Already verified";
+			} else {
 				//user not found, attempt to validate w/ token
 				$tokenStmnt = DB::getPDO()->prepare(
-					"select * from email where token = ?"
+					"SELECT * FROM email WHERE token = ?"
 				);
-				$tokenStmnt->execute(array($request->post['token']));
+				$tokenStmnt->execute( array( trim($request->post['token']) ) );
 				$ret2 = $tokenStmnt->fetchAll();
 
-				if($ret2[0]['address'] == $request->post['email']) {
+				if(		!is_array( $ret2 )
+					|| 	!isset( $ret2[0] )
+					|| 	!($ret2[0]['address'] == $request->post['email']) ) {
+					$this->error = "Invalid verification token";
+				} else {
 					//its a match! add user to db with entered password
 					$user = new User();
-					$user->id = 0;
+					$user->id = NULL;
 					$user->email = $request->post['email'];
 					$user->password = $request->post['password'];
 					$user->store();
-				}else {
-					//error token does not match to email
-					print "error! token and email do not match";
+
+					//login as this user as well
+					Session::setUser( $user );
+					$this->success = true;
 				}
 			}
 		}
@@ -39,12 +47,30 @@ class Verify extends Page {
 
 	function render() {
 				echo <<<HTML
-		<h1> Hi this is the Validate page </h1>
+		<h1> Validate </h1>
 HTML;
+		if( $this->success ) {
+			$this->renderSuccess();
+		} else {
+			$this->renderForm();
+		}
+	}
 
-		//use URLPATH in front of URL's or else links will break when we host from "/~mille168/" vs "/" vs "/some/subdir"
-		$URLPATH = URLPATH;
+	function renderSuccess() {
 		echo <<<HTML
+		<h2>All Verified! Enjoy using APP</h2>
+HTML;
+	}
+
+	function renderForm() {
+		$URLPATH = URLPATH;
+		if( $this->error )
+			$error = "<h2>$this->error</h2>";
+		else
+			$error = "";
+
+		echo <<<HTML
+		$error
 		<form method="post" action="{$URLPATH}verify">
 			<label for="u">Email:</label><input type="text" id="u" name="email" />
 			<label for="p">Password:</label><input type="password" id="p" name="password" />

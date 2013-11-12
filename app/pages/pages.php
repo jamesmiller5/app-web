@@ -14,7 +14,7 @@ class Index extends Page {
 		}
 
 		echo <<<HTML
-		<h1> Hi "{$name}", this is the Index Page</h1>
+		<h1>Hi "{$name}", this is the Index Page</h1>
 HTML;
 	}
 }
@@ -27,3 +27,32 @@ require APPDIR . "app/pages/verify.php";
 require APPDIR . "app/pages/register.php";
 
 //demo page, just a list of links
+class Demo extends Page {
+	function handle(Request $request) {
+		//no errors? lets render!
+		parent::headAndFoot( function() { $this->render(); } );
+	}
+
+	function render() {
+		$user = Session::getUser();
+
+		$name = "";
+		if( $user ) {
+			$name = $user->email;
+		}
+
+		echo <<<HTML
+		<h1> Demo </h1>
+		<ol>
+			<li>Theme & Style</li>
+			<li><a href="/register">Register</a></li>
+			<li>Email</li>
+			<li><a href="/verify">Verify</a></li>
+			<li><a href="/login">Login</a></li>
+			<li><a href="/trust">Trust Creation</a></li>
+			<li><a href="/graph">Network View</a></li>
+		</ol>
+HTML;
+	}
+}
+Router::getDefault()->register( "/demo", new Demo() );

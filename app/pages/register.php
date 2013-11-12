@@ -1,5 +1,6 @@
 <?php
 class Register extends Page {
+	private $message = false;
 	function handle(Request $request) {
 		if( isset( $request->post ) ) {
 			//find if user already exists
@@ -12,10 +13,8 @@ class Register extends Page {
 			$ret = $statement->fetch();
 
 			if($ret) {
-				echo <<<HTML
-				<p>email already registered</p>
-HTML;
-			}else {
+				$this->message = "Email already registered. Please login instead";
+			} else {
 				//register email, send claimtoken
 				$to = $request->post['email'];
 				$subject = "Welcome to APP";
@@ -38,23 +37,26 @@ HTML;
 
 				}
 
-			$from = "no-reply@app.com";
-			$headers = "From:" . $from;
-			mail($to,$subject,$message,$headers);
-			echo <<<HTML
-			<p> Mail Sent. Please check your email for instructions. </p>
-HTML;
-			}
+				$from = "no-reply@app.com";
+				$headers = "From:" . $from;
+				mail($to,$subject,$message,$headers);
 
+				$this->message = "Mail sent. Please check your email for instructions.";
+			}
 		}
 
-		//no errors? lets render!
 		parent::headAndFoot( function() { $this->render(); } );
 	}
 
 	function render() {
-				echo <<<HTML
-		<h1> Hi this is the Register page </h1>
+		if( $this->message )
+			$message = "<h2>{$this->message}</h2>";
+		else
+			$message = "";
+
+		echo <<<HTML
+		<h1> Register </h1>
+		$message
 HTML;
 
 		//use URLPATH in front of URL's or else links will break when we host from "/~mille168/" vs "/" vs "/some/subdir"
