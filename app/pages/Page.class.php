@@ -114,6 +114,7 @@ HTML;
           </ul>
 
           <ul class="right">
+<!--
               <li class=""><a href="#">Profile</a></li>
               <li class=""><a href="#">Trust Network</a></li>
               <li class=""><a href="#">Subjective Network</a></li>
@@ -124,7 +125,11 @@ HTML;
                   <li class=""><a href="#">Trust Network</a></li>
                 </ul>
               </li>
-              <li class="signout"<a href="{$URLPATH}login?logout">Logout</a></li>
+-->
+				<form method="get" action="{$URLPATH}login">
+					<input type="hidden" name="logout" />
+				  <input type="submit" class="signout" value="Logout" />
+				</form>
           </ul>
 HTML;
 	}
