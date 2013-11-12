@@ -26,6 +26,7 @@ require APPDIR . "app/pages/login.php";
 require APPDIR . "app/pages/verify.php";
 require APPDIR . "app/pages/register.php";
 require APPDIR . "app/pages/graph.php";
+require APPDIR . "app/pages/trust.php";
 
 //demo page, just a list of links
 class Demo extends Page {
