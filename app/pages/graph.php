@@ -42,6 +42,40 @@ var graphJSON = {
   ]
 };
 
+var rawJSON = {
+  "Michael": [
+	{name: "Dennis", topic: "C++"},
+	{name: "Jessica", topic: "Java"},
+	{name: "Timothy", topic: "C++"},
+	{name: "Bianca", topic: "C#"},
+	{name: "Franklin", topic: "C#"},
+	{name: "Barbara", topic: "C++"}
+  ],
+  "Dennis": [
+	{name: "Michael", topic: "C#"},
+	{name: "Monty", topic: "Javascript"}
+  ],
+  "Jessica": [
+	{name: "Barbara", topic: "Javascript"}
+  ],
+  "Franklin": [
+	{name: "Timothy", topic: "C#"}
+  ],
+  "Monty": [
+	{name: "James", topic: "Java"}
+  ],
+  "Bianca": [
+	{name: "Monty", topic: "Java"}
+  ],
+  "Barbara": [
+	{name: "Timothy", topic: "C++"}
+  ]
+};
+
+function TransformJSON() {
+	
+}
+
 jQuery(function(){
   var graph = new Springy.Graph();
   graph.loadJSON(graphJSON);
