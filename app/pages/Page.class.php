@@ -34,7 +34,7 @@ class Page {
 			</div>
 		</header>
 
-		<nav class="top-bar large-11 columns large-centered" style="">
+		<nav class="top-bar large-11 columns large-centered" style="overflow: hidden">
 HTML;
 		if( Session::getUser() == NULL ) {
 			$this->loginBox();
@@ -44,27 +44,31 @@ HTML;
 
 		echo <<<HTML
 		</nav>
-		<figure>
+		<section style="margin: auto 7%">
 HTML;
 	}
 
 	function foot() {
 		$ASSETS = "/assets/";
 		echo <<<HTML
-		</figure>
-	<footer class="row">
-		<div class="large-12 columns">
-			<hr />
-			<h5 style="text-align:center">By James Miller, Mitchell Mounts, Andrew Mack, and David Zinn</h5>
-		</div>
-	</footer>
+		</section>
+		<footer class="row">
+			<div class="large-12 columns">
+				<hr />
+				<h5 style="text-align:center">By James Miller, Mitchell Mounts, Andrew Mack, and David Zinn</h5>
+			</div>
+		</footer>
+		<script>
+		document.write('<script src=' +
+		('__proto__' in {} ? '{$ASSETS}js/vendor/zepto' : '{$ASSETS}js/vendor/jquery.min') +
+		'.js><\/script>')
+		</script>
 
-  	<script src="{$ASSETS}js/foundation.min.js"></script>
+		<script src="{$ASSETS}js/foundation.min.js"></script>
 
-  	<script>
-    	$(document).foundation();
-  	</script>
-
+		<script>
+			$(document).foundation();
+		</script>
 	</body>
 </html>
 HTML;
@@ -92,20 +96,25 @@ HTML;
 	}
 
 	function navBar() {
+		$URLPATH = URLPATH;
+		$name = "";
+		$user = Session::getUser();
+		if( isset( $user ) )
+			$name = $user->email;
+
 		echo <<<HTML
 		  <ul class="title-area hide-for-small">
             <!-- Title Area -->
             <li class="name">
               	<h1>
-                	<a href="#">
-                  		(Profile Name)
-                	</a>
+                	<a href="#">{$name}</a>
               	</h1>
             </li>
             <li class="toggle-topbar"><a href="#"></a></li>
           </ul>
 
           <ul class="right">
+<!--
               <li class=""><a href="#">Profile</a></li>
               <li class=""><a href="#">Trust Network</a></li>
               <li class=""><a href="#">Subjective Network</a></li>
@@ -116,7 +125,11 @@ HTML;
                   <li class=""><a href="#">Trust Network</a></li>
                 </ul>
               </li>
-              <li class="signout"<a href="login?logout">Logout</a></li>
+-->
+				<form method="get" action="{$URLPATH}login">
+					<input type="hidden" name="logout" />
+				  <input type="submit" class="signout" value="Logout" />
+				</form>
           </ul>
 HTML;
 	}
