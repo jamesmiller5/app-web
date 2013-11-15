@@ -20,8 +20,10 @@ class Page {
  		<title>Trust Networks</title>
 		<meta charset="utf-8">
   		<meta name="viewport" content="width=device-width">
+
   		<link rel="stylesheet" href="{$ASSETS}css/foundation.min.css">
   		<script src="{$ASSETS}js/vendor/custom.modernizr.js"></script>
+		<script src="{$ASSETS}js/vendor/jquery.min.js"></script>
 	</head>
 
 	<body>
@@ -58,7 +60,7 @@ HTML;
 		</footer>
 		<script>
 		document.write('<script src=' +
-		('__proto__' in {} ? '{$ASSETS}js/vendor/zepto' : '{$ASSETS}js/vendor/jquery') +
+		('__proto__' in {} ? '{$ASSETS}js/vendor/zepto' : '{$ASSETS}js/vendor/jquery.min') +
 		'.js><\/script>')
 		</script>
 
@@ -86,9 +88,7 @@ HTML;
             		<div class="small-5 columns">
         				<input type="password" placeholder="Password" name="password">
         			</div>
-            		<div class="small-2 columns">
-            			<input type="submit" class="button">Login</input>
-            		</div>
+			<button type="submit" class="small-2 columns button">Login</input>
             	</form>
             </ul>
           </section>

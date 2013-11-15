@@ -37,7 +37,7 @@ class Login extends Page {
 
 	function logoutPage() {
 		echo <<<HTML
-		<h1> Loggout </h1>
+		<h1> Logout </h1>
 		<h2> All logged out! </h2>
 HTML;
 	}
