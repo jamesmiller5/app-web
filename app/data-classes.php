@@ -67,6 +67,7 @@ class Session {
 class User {
 	public $id;
 	public $password;
+	public $email;
 
 	function load($id) {
 		//fetch the results and set our instance variables to them
@@ -88,16 +89,17 @@ class User {
 		if( (int)$this->id == 0 ) {
 			$this->id = null;
 			$statement = DB::getPDO()->prepare(
-				"INSERT INTO user VALUES (:id, :password);"
+				"INSERT INTO user VALUES (:id, :email, :password);"
 			);
 		} else {
 			$statement = DB::getPDO()->prepare(
-				"UPDATE user SET password=:password WHERE id=:id;"
+				"UPDATE user SET password=:password, email=:email WHERE id=:id;"
 			);
 		}
 
 		$ret = $statement->execute( array(
 			":id" => $this->id,
+			":email" => $this->email,
 			":password" => $this->password,
 		) );
 
@@ -127,5 +129,185 @@ class User {
 		}
 
 		return null;
+	}
+	
+	function remove() {
+		//make sure the citation exists
+		if( (int)$this->id != 0 ) {
+			$statement = DB::getPDO()->prepare(
+				"DELETE FROM User WHERE id = :id;"
+			);
+		}
+		
+		$ret = $statement->execute( array(
+			":id" => $this->id,
+		) );
+	}
+}
+
+class Citation {
+	public $id;		//int
+	public $subject;	//string, foreign key
+	public $description;	//string
+	public $source;		//string
+	
+	function load($id) {
+		//fetch results and set equal to instance variables
+		$statement = DB::getPDO()->prepare(
+			"SELECT * FROM citation WHERE id = ?"
+		);
+		$statement->execute( array( (int)$id ) );
+
+		$statement->setFetchMode(PDO::FETCH_INTO, $this);
+		$ret = $statement->fetch();
+		if( $ret )
+			$this->id = (int)$this->id;
+
+		return $ret;
+	}
+	
+	function store() {
+		//citation does not exist in table, insert it
+		if( (int)$this->id == 0 ) {
+			$this->id = null;
+			$statement = DB::getPDO()->prepare(
+				"INSERT INTO Citation VALUES (:id, :subject, :description, :source);"
+			);
+		} else {
+			//citation does exist in table, update it
+			$statement = DB::getPDO()->prepare(
+				"UPDATE Citation SET subject=:subject, description=:description, source=:source WHERE id=:id;"
+			);
+		}
+
+		$ret = $statement->execute( array(
+			":id" => $this->id,
+			":subject" => $this->subject,
+			":description" => $this->description,
+			":source" => $this->source,
+		) );
+
+		//grab the unique id from insertion if we created a new row
+		if( $this->id == null && $ret )
+			$this->id = (int)DB::getPDO()->lastInsertId();
+	}
+	
+	function remove() {
+		//make sure the citation exists
+		if( (int)$this->id != 0 ) {
+			$statement = DB::getPDO()->prepare(
+				"DELETE FROM Citation WHERE id = :id;"
+			);
+		}
+		
+		$ret = $statement->execute( array(
+			":id" => $this->id,
+		) );
+	}
+}
+
+class Trust {
+	public $trusterId;	//int
+	public $trusteeId;	//int
+	public $citeId;		//int
+	
+	function trusterload($trusterId) {
+		//fetch results and set equal to instance variables
+		$statement = DB::getPDO()->prepare(
+			"SELECT * FROM Trust WHERE trusterId = ?"
+		);
+		$statement->execute( array( (int)$trusterId ) );
+
+		$statement->setFetchMode(PDO::FETCH_INTO, $this);
+		$ret = $statement->fetch();
+		if( $ret )
+			$this->trusterId = (int)$this->trusterId;
+
+		return $ret;
+	}
+	
+	function trusteeload($trusteeId) {
+		//fetch results and set equal to instance variables
+		$statement = DB::getPDO()->prepare(
+			"SELECT * FROM Trust WHERE trusteeId = ?"
+		);
+		$statement->execute( array( (int)$trusteeId ) );
+
+		$statement->setFetchMode(PDO::FETCH_INTO, $this);
+		$ret = $statement->fetch();
+		if( $ret )
+			$this->trusteeId = (int)$this->trusteeId;
+
+		return $ret;
+	}
+	
+	function citeload($citeId) {
+		//fetch results and set equal to instance variables
+		$statement = DB::getPDO()->prepare(
+			"SELECT * FROM Trust WHERE citeId = ?"
+		);
+		$statement->execute( array( (int)$citeId ) );
+
+		$statement->setFetchMode(PDO::FETCH_INTO, $this);
+		$ret = $statement->fetch();
+		if( $ret )
+			$this->citeId = (int)$this->citeId;
+
+		return $ret;
+	}
+	
+	function store() {
+		//trust edge does not exist in table, insert it
+		//trust edges should not be updated only inserted and removed
+		$statement = DB::getPDO()->prepare(
+			"INSERT INTO Trust VALUES (:trusterId, :trusteeId, :citeId);"
+		);
+		
+		$ret = $statement->execute( array(
+			":trusterId" => $this->trusterId,
+			":trusteeId" => $this->trusteeId,
+			":citeId" => $this->citeId,
+		) );
+	}
+	
+	function remove() {
+		//remove a trust edge from the table
+		$statement = DB::getPDO()->prepare(
+			"DELETE FROM Trust WHERE trusterId = :trusterId AND trusteeId = :trusteeId AND citeId = :citeId;"
+		);
+		
+		$ret = $statement->execute( array(
+			":trusterId" => $this->trusterId,
+			":trusteeId" => $this->trusteeId,
+			":citeId" => $this->citeId,
+		) );
+	}
+}
+
+class Subject {
+	public $subName;
+	
+	//Subject class does not need a load function since there's only one column
+	
+	function store() {
+		//subject does not exist, insert it
+		$statement = DB::getPDO()->prepare(
+			"INSERT INTO Subject VALUES (:name);"
+		);
+		
+		$ret = $statement->execute( array(
+			":name" => $this->subName,
+		) );
+	}
+	
+	function remove() {
+		//remove a subject from the table
+		$statement = DB::getPDO()->prepare(
+			"DELETE FROM Subject WHERE name = :name;"
+		);
+		
+		$ret = $statement->execute( array(
+			":name" => $this->subName,
+		) );
 	}
 }

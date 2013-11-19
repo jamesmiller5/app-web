@@ -90,10 +90,42 @@ class Test extends Page {
 	function render() {
 		$email  = "";
 		$user = User::login("foo@bar","number");
+		$newuser = new User();
+		$newuser->email = "test@testing";
+		$newuser->password = "pass";
+		$newuser->store();
+		$user = User::login("test@testing", "pass");
+		$newuser->remove();
+		
+		//subject function tests
+		$subject = new Subject();
+		$subject->subName = "Math";
+		$subject->store();
+		
+		//test the Citation functions
+		$citation = new Citation();
+		$citation->subject = "Math";
+		$citation->description = "calculator";
+		$citation->source = "test";
+		$citation->store();
+		var_dump($citation);
+		$newcit = new Citation();
+		$newcit->load($citation->id);
+		var_dump($newcit);
+		
+		$citation->remove();
+		$subject->remove();
+		
 		if( $user )
 			$email = htmlentities($user->email);
+		
 		echo <<<HTML
 		<h1> Hi this is the Test Page id:"{$email}" </h1>
+		<h1> Login verifies that User->load is working </h1>
+		<h1> The subject was inserted and removed correctly </h1>
+		<h1> The first 2 var_dumps should match to confirm citation functions </h1>
+		<h1> refresh to check that the remove functions worked correctly </h1>
+		
 HTML;
 	}
 }
