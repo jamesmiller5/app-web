@@ -13,73 +13,60 @@ class Index extends Page {
 			$name = $user->email;
 		}
 
+		if( $name ) {
 		echo <<<HTML
-		<h1> Hi "{$name}", this is the Index Page</h1>
+		<h1>Hi "{$name}", this is the Index Page</h1>
 HTML;
+		} else {
+		echo <<<HTML
+		<h1>Welcome to APP.</h1>
+		<h2>More functionality coming soon.</h2>
+		<p>Please login or register to continue</p>
+
+HTML;
+		}
 	}
 }
 //register this class as the default page aka '/'
 Router::getDefault()->register( "/", new Index() );
 
-class Login extends Page {
-	public $logout = false;
-	public $badLogin = false;
+//include other pages, use a full path to avoid weirdness
+require APPDIR . "app/pages/login.php";
+require APPDIR . "app/pages/verify.php";
+require APPDIR . "app/pages/register.php";
+require APPDIR . "app/pages/graph.php";
+require APPDIR . "app/pages/trust.php";
 
+//demo page, just a list of links
+class Demo extends Page {
 	function handle(Request $request) {
-
-		if( isset($request['logout']) ) {
-			Session::destroy();
-
-			$this->logout = true;
-		} else if( isset( $request->post ) ) {
-			//attempt login
-			$user = User::login( $request->post['username'], $request->post['password'] );
-			if( $user != null ) {
-				//set Session to this $user
-				Session::setUser( $user );
-			} else {
-				$this->badLogin = true;
-			}
-		}
-
 		//no errors? lets render!
 		parent::headAndFoot( function() { $this->render(); } );
 	}
 
 	function render() {
-		if( $this->logout ) {
-			$this->logoutPage();
-		} else {
-			$this->loginPage();
-		}
-	}
+		$user = Session::getUser();
 
-	function logoutPage() {
-		echo <<<HTML
-		<h1> All logged out! </h1>
-HTML;
-	}
-
-	function loginPage() {
-		echo <<<HTML
-		<h1> Hi this is the Login page </h1>
-HTML;
-		if( $this->badLogin ) {
-			Page::alert("Bad Login");
+		$name = "";
+		if( $user ) {
+			$name = $user->email;
 		}
 
-		//use URLPATH in front of URL's or else links will break when we host from "/~mille168/" vs "/" vs "/some/subdir"
-		$URLPATH = URLPATH;
 		echo <<<HTML
-		<form method="post" action="{$URLPATH}login">
-			<label for="u">Username:</label><input type="text" id="u" name="username" />
-			<label for="p">Password:</label><input type="password" id="p" name="password" />
-			<input type="submit" />
-		</form>
+		<h1> Demo </h1>
+		<ol>
+			<li>Theme & Style</li>
+			<li><a href="/register">Register</a></li>
+			<li>Email</li>
+			<li><a href="/verify">Verify</a></li>
+			<li><a href="/login">Login</a></li>
+			<li><a href="/trust">Trust Creation</a></li>
+			<li><a href="/graph">Network View</a></li>
+		</ol>
 HTML;
 	}
 }
-Router::getDefault()->register( "/login", new Login() );
+Router::getDefault()->register( "/demo", new Demo() );
 
 class Test extends Page {
 	function handle(Request $request) {

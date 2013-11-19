@@ -66,8 +66,8 @@ class Session {
 
 class User {
 	public $id;
-	public $password;
 	public $email;
+	public $password;
 
 	function load($id) {
 		//fetch the results and set our instance variables to them
@@ -206,7 +206,7 @@ class Citation {
 	}
 }
 
-class Trust {
+class Trustent {
 	public $trusterId;	//int
 	public $trusteeId;	//int
 	public $citeId;		//int
