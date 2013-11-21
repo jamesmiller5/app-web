@@ -55,7 +55,6 @@ var transformJSON = function (rawJson) {
 	var edgeCount = 0;
 	$.each(rawJson, function(x, set) {
 		nodes[x] = set.src;
-		//alert(nodes[x]);
 		$.each(set.targets, function(y, edge) {
 			var newEdge = new Array();
 			newEdge[0] = set.src;
@@ -68,15 +67,12 @@ var transformJSON = function (rawJson) {
 	});
 
 	//$.each(edges, function(x, edge) { alert(edge) });
-	//alert(nodes);
-	//alert(edges);
 
 	return { "nodes": nodes, "edges": edges };
 }
 
 jQuery(function(){
   var graph = new Springy.Graph();
-  //graph.loadJSON(graphJSON);
   graph.loadJSON(transformJSON(rawJSON));
 
   var springy = jQuery('#springydemo').springy({
