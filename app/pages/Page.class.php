@@ -58,11 +58,6 @@ HTML;
 				<h5 style="text-align:center">By James Miller, Mitchell Mounts, Andrew Mack, and David Zinn</h5>
 			</div>
 		</footer>
-		<script>
-		document.write('<script src=' +
-		('__proto__' in {} ? '{$ASSETS}js/vendor/zepto' : '{$ASSETS}js/vendor/jquery.min') +
-		'.js><\/script>')
-		</script>
 
 		<script src="{$ASSETS}js/foundation.min.js"></script>
 
