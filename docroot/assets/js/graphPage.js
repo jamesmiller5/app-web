@@ -80,8 +80,6 @@ jQuery(function(){
 	100.0,
 	0.1 );
 
-  jQuery('#springydemo').unbind('mousedown');
-
   var springy = jQuery('#springydemo').springy({
     graph: graph
   });

@@ -24,8 +24,8 @@ class Graph extends Page {
 
 		<div class="small-4 columns">
 			<div id="slider"></div>
-			Levels: <span id="levelCount">0</span>
 			<form name="input" method="get" action="#">
+				Levels: <input type="text" text="1" id="levels" name="levels" size="3" disabled/>
 				<input type="checkbox" name="topic" value="C++">C++<br>
 				<input type="checkbox" name="topic" value="Java">Java<br>
 				<input type="submit" value="Submit">
