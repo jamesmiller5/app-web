@@ -72,8 +72,13 @@ var transformJSON = function (rawJson) {
 }
 
 jQuery(function(){
-  var graph = new Springy.Graph();
+  var graph = new Springy.Graph();	
   graph.loadJSON(transformJSON(rawJSON));
+
+  var layout = new Springy.Layout.ForceDirected( graph,
+	100.0,
+	100.0,
+	0.1 );
 
   var springy = jQuery('#springydemo').springy({
     graph: graph
