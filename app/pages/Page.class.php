@@ -35,6 +35,7 @@ class Page {
 		</header>
 
 		<nav class="top-bar large-11 columns large-centered" style="overflow: hidden">
+		<section class="top-bar-section" style="left: 0%;">
 HTML;
 		if( Session::getUser() == NULL ) {
 			$this->loginBox();
@@ -43,6 +44,7 @@ HTML;
 		}
 
 		echo <<<HTML
+		</section>
 		</nav>
 		<section style="margin: auto 7%">
 HTML;
@@ -72,7 +74,6 @@ HTML;
 	function loginBox() {
 		$URLPATH = URLPATH;
 		echo <<<HTML
-		  <section class="top-bar-section" style="left: 0%;">
             <!-- Login Field -->
             <ul class="right">
             	<form method="post" action="{$URLPATH}login">
@@ -86,7 +87,6 @@ HTML;
 			<button type="submit" class="small-2 columns button">Login</input>
             	</form>
             </ul>
-          </section>
 HTML;
 	}
 
@@ -102,29 +102,16 @@ HTML;
             <!-- Title Area -->
             <li class="name">
               	<h1>
-                	<a href="#">{$name}</a>
+                	<a href="{$URLPATH}">{$name}</a>
               	</h1>
             </li>
             <li class="toggle-topbar"><a href="#"></a></li>
           </ul>
 
           <ul class="right">
-<!--
-              <li class=""><a href="#">Profile</a></li>
-              <li class=""><a href="#">Trust Network</a></li>
-              <li class=""><a href="#">Subjective Network</a></li>
-              <li class="has-dropdown not-click">
-                <a href="#">Graph Views</a>
-                <ul class="dropdown"><li class="title back js-generated"><h5><a href="#">Back</a></h5></li>
-                  <li class=""><a href="#">Subjective Network</a></li>
-                  <li class=""><a href="#">Trust Network</a></li>
-                </ul>
-              </li>
--->
-				<form method="get" action="{$URLPATH}login">
-					<input type="hidden" name="logout" />
-				  <input type="submit" class="signout" value="Logout" />
-				</form>
+              <li class=""><a href="{$URLPATH}">Profile</a></li>
+              <li class=""><a href="{$URLPATH}graph">Trust Network</a></li>
+	      <li><a class="button" method="get" href="{$URLPATH}login?logout=true">Logout</a></li>
           </ul>
 HTML;
 	}
