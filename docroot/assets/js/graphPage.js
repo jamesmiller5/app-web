@@ -45,7 +45,7 @@ var rawJSON = [
 var randomColor = function() {
 	var colors = ["#000000", "#00A0B0", "#6A4A3C", "#CC333F",
 					"#EB6841", "#EDC951", "#7DBE3C", "#123456",
-					"#FFEEFF", "#ABCDEF" ];
+					"#00EEFF", "#00EE00" ];
 	return colors[Math.floor(Math.random()*10)];
 };
 
