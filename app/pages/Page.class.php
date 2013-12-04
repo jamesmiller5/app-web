@@ -117,9 +117,10 @@ HTML;
           </ul>
 
           <ul class="right">
-			<li class=""><a href="{$URLPATH}trust">Add Trust</a></li>
-			<li class=""><a href="{$URLPATH}graph">Trust Network</a></li>
-			<li><a class="button" method="get" href="{$URLPATH}login?logout=true">Logout</a></li>
+	      <li class=""><a href="{$URLPATH}profile">Profile</a></li>
+	      <li class=""><a href="{$URLPATH}trust">Add Trust</a></li>
+              <li class=""><a href="{$URLPATH}graph">Trust Network</a></li>
+	      <li><a class="button" method="get" href="{$URLPATH}login?logout=true">Logout</a></li>
           </ul>
 HTML;
 	}
