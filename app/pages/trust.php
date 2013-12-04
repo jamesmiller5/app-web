@@ -11,9 +11,8 @@ class Trust extends Page {
 	function render() {
 
 		echo <<<HTML
-		<h1> Trust </h1>
 		<div class="row add-citation">
-			<h2 style="text-align:center">Add Citation</h2>
+			<h1 style="text-align:center">Add Citation</h1>
 			<form name="input" method="post" action="#">
 					<h4 class="columns" style="width:110px">I trust</h4>
 						<input class="small-2 columns" type="text" style="width:100px" size="10" placeholder="Jim" />
