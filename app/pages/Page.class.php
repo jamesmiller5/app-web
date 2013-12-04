@@ -23,6 +23,7 @@ class Page {
   		<meta name="viewport" content="width=device-width">
 
   		<link rel="stylesheet" href="{$ASSETS}css/foundation.min.css">
+  		<link rel="stylesheet" href="{$ASSETS}css/app.css">
   		<script src="{$ASSETS}js/vendor/custom.modernizr.js"></script>
 		<script src="{$ASSETS}js/vendor/jquery.min.js"></script>
 	</head>
