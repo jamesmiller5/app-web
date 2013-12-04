@@ -1,8 +1,14 @@
 <?php
 class Register extends Page {
 	private $message = false;
+	private $email;
+
 	function handle(Request $request) {
+		//$request['email'] is the same as checking both request->get['email'] || request->post['email']
+		$this->email = (isset($request['email']) ) ? $request['email'] : "";
 		if( isset( $request->post ) ) {
+			//save these variables for display
+
 			//find if user already exists
 			$statement = DB::getPDO()->prepare(
 				"SELECT * FROM user WHERE email = ?"
@@ -68,9 +74,12 @@ HTML;
 
 		//use URLPATH in front of URL's or else links will break when we host from "/~mille168/" vs "/" vs "/some/subdir"
 		$URLPATH = URLPATH;
+
+		//escape user input for XXS
+		$email = htmlentities($this->email);
 		echo <<<HTML
 		<form method="post" action="{$URLPATH}register">
-			<label for="u">Email:</label><input type="text" id="u" name="email" />
+			<label for="u">Email:</label><input type="text" id="u" name="email" value="{$email}" />
 			<input type="submit" />
 		</form>
 HTML;
