@@ -24,18 +24,25 @@ class Register extends Page {
 				);
 				$statement2->execute( array( $request->post['email'] ) );
 				$ret2 = $statement2->fetchAll();
-
+				
+				$message = "Thank you for registering your email address with Authority Publishing Platform.\n\n";
+				$message = $message . "To finish creating your account, you must verify that you received this email.\n";
+				$message = $message . "Please click on the following link to verify your email and create a password for your brand new account with APP.\n\n";
+				
 				if($ret2) {
-					$message = "follow link to verify: " . "$_SERVER[HTTP_HOST]" . "/verify  use token: " . $ret2[0]['token'];
+					$message = $message . "http://$_SERVER[HTTP_HOST]" . "/verify?email=" . $to . "&token=" . $ret2[0]['token'] . "\n\n";
 				}else {
 					$token = uniqid('', true);
-					$message = "follow link to verify: " . "$_SERVER[HTTP_HOST]" . "/verify  use token: " . $token;
+					$message = $message . "http://$_SERVER[HTTP_HOST]" . "/verify?email=" . $to . "&token=" . $token . "\n\n";
 					$insert = DB::getPDO()->prepare(
 						"insert into email values(:email,:token)"
 					);
 					$insert->execute(array(':email'=>$request->post['email'], ':token'=>$token));
 
 				}
+				
+				$message = $message . "We hope you enjoy your stay,\n";
+				$message = $message . "The APP Team";
 
 				$from = "no-reply@app.com";
 				$headers = "From:" . $from;
