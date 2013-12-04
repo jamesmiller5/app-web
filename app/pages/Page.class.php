@@ -13,6 +13,7 @@ class Page {
 	//header is a php function
 	function head() {
 		$ASSETS = "/assets/";
+		$URLPATH = URLPATH;
 		echo <<<HTML
 <!DOCTYPE html>
 <html>
@@ -29,7 +30,7 @@ class Page {
 	<body>
 		<header class="row">
 			<div class="large-12 columns">
-				<h2 style="text-align:center">Authority Connections</h2>
+				<h2 style="text-align:center"><a href="{$URLPATH}" style="color: rgb(34,34,34);">Authority Connections</a></h2>
 				<hr />
 			</div>
 		</header>
@@ -74,6 +75,12 @@ HTML;
 	function loginBox() {
 		$URLPATH = URLPATH;
 		echo <<<HTML
+		<ul class="title-area hide-for-small">
+            <!-- Title Area -->
+            <a href="{$URLPATH}register" class="button">Register</input>
+            <li class="toggle-topbar"><a href="#"></a></li>
+          </ul>
+
             <!-- Login Field -->
             <ul class="right">
             	<form method="post" action="{$URLPATH}login">
@@ -109,7 +116,7 @@ HTML;
           </ul>
 
           <ul class="right">
-              <li class=""><a href="{$URLPATH}">Profile</a></li>
+	      <li class=""><a href="{$URLPATH}trust">Add Trust</a></li>r
               <li class=""><a href="{$URLPATH}graph">Trust Network</a></li>
 	      <li><a class="button" method="get" href="{$URLPATH}login?logout=true">Logout</a></li>
           </ul>
