@@ -17,12 +17,12 @@ class Graph extends Page {
 <style>#slider {margin: 10px; }</style>
 <link rel="stylesheet" href="{$ASSETS}css/jquery-ui.min.css">
 
-		<div class="small-8 columns">
-			<canvas id="springydemo" width="640" height="480">
+		<div class="small-12 columns">
+			<canvas id="springydemo" width="1020px" height="480">
 			</canvas>
 		</div>
 
-		<div class="small-4 columns">
+		<div class="small-12 columns">
 			<div id="slider"></div>
 			<form name="input" method="get" action="#" onsubmit="return graphHandle(this)">
 				Levels: <input type="text" text="1" id="levels" name="levels" size="3" disabled/>
@@ -67,7 +67,7 @@ class Graph extends Page {
 					if( !att ) {
 						var layout = new Springy.Layout.ForceDirected( gHandle,
 							100.0,
-							100.0,
+							25.0,
 							0.1 );
 
 						var springy = jQuery('#springydemo').springy({

@@ -4,8 +4,8 @@ sqlite3 -batch "$APPDIR/database.sqlite" <<INSERTDATA
 PRAGMA foreign_keys = ON;
 
 insert into Email values("foo@bar", "thisisfoobar123");
-insert into Email values("bar@foo", "456barfoo");
-insert into User(email,password) values("foo@bar", "number");
+insert into User(email, password) values("bar@foo", "password");
+insert into User(email, password) values("foo@bar", "number");
 
 insert into Email values("harold@app.com", "htoken");
 insert into Email values("jennifer@app.com", "jetoken");
@@ -33,5 +33,13 @@ insert into Citation(subject, description) values("WWII History", "they faught i
 insert into Citation(subject, description) values("WWII History", "they wrote a book about it.");
 insert into Citation(subject, description) values("WWII History", "they own a mosin-nagant.");
 insert into Citation(subject, description) values("Python", "they know python so well you'd think they were a snake!");
+
+insert into Trust values(1,2,1);
+insert into Trust values(1,3,2);
+insert into Trust values(1,4,3);
+insert into Trust values(1,5,4);
+insert into Trust values(1,6,5);
+insert into Trust values(2,5,6);
+insert into Trust values(6,7,7);
 
 INSERTDATA

@@ -10,7 +10,11 @@ class Index extends Page {
 
 		$name = "";
 		if( $user ) {
-			$name = $user->email;
+			if( $user->name == null ){
+				$name = $user->email;
+			} else {
+				$name = $user->name;
+			}
 		}
 
 		if( $name ) {

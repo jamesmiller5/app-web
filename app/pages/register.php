@@ -1,7 +1,7 @@
 <?php
 class Register extends Page {
 	private $message = false;
-	private $email;
+	public $email;
 
 	function handle(Request $request) {
 		//$request['email'] is the same as checking both request->get['email'] || request->post['email']

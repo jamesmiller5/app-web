@@ -94,6 +94,9 @@
 				data = datas[i] || {};
 			}
 			data.label = name;
+			if(this.nodes.length === 0){
+				data.color = "#EDC951";
+			}
 			var node = new Node(name, data);
 			this.addNode(node);
 		}
