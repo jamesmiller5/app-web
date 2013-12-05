@@ -37,3 +37,18 @@ HTML;
 	}
 }
 Router::getDefault()->register( "/graph", new Graph() );
+
+Router::getDefault()->registerHandler( "/graph/view-subjective", function($request) {
+	$data = array(
+		['src' => "Jim", 'targets' => [
+				["target" => "Jaye", "topic" => "C++"],
+				['target' => 'Andrew', 'topic' => 'Ideas'],
+			]
+		],
+		['src' => 'Jaye', 'targets' => [ ] ],
+		['src' => 'Andrew', 'targets' => [ ] ],
+	);
+
+	header('Content-type: application/json');
+	echo json_encode( $data, JSON_PRETTY_PRINT );
+});
