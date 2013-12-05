@@ -1,12 +1,12 @@
 <?php
 
-class Profile extends Page {	
+class Profile extends Page {
 	private $error = false;
 	private $success = false;
 
 	function handle(Request $request) {
 		$user = Session::getUser();
-		
+
 		if( isset( $request->post ) ) {
 			//todo
 			if($user->name == null || ($user->name != null && $request["name"] != $user->name)) {
@@ -27,7 +27,7 @@ class Profile extends Page {
 				$user->website = $request["website"];
 				$this->success = true;
 			}
-			
+
 			if($this->success) {
 				$user->update();
 			}
@@ -45,7 +45,7 @@ HTML;
 				<h2>Profile Updated!</h2>
 HTML;
 		}
-		
+
 		$this->renderForm();
 	}
 
@@ -55,14 +55,14 @@ HTML;
 			$error = "<h2>$this->error</h2>";
 		else
 			$error = "";
-			
+
 		$user = Session::getUser();
 
 		$name = "";
 		$company = "";
 		$title = "";
 		$website = "";
-		
+
 		if( $user ) {
 			$name = $user->name;
 			$company = $user->company;
@@ -74,9 +74,9 @@ HTML;
 		$error
 		<form method="post" action="{$URLPATH}profile">
 			<label for="n">Name:</label><input type="text" id="n" name="name" value="{$name}" />
-			<label for="n">Company:</label><input type="text" id="c" name="company" value="{$company}" />
-			<label for="n">Title:</label><input type="text" id="t" name="title" value="{$title}" />
-			<label for="n">Website:</label><input type="text" id="w" name="website" value="{$website}" />
+			<label for="c">Company:</label><input type="text" id="c" name="company" value="{$company}" />
+			<label for="t">Title:</label><input type="text" id="t" name="title" value="{$title}" />
+			<label for="w">Website:</label><input type="text" id="w" name="website" value="{$website}" />
 			<input type="submit" />
 		</form>
 HTML;
