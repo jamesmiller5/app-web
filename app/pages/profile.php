@@ -2,12 +2,16 @@
 
 class Profile extends Page {
 	private $error = false;
+	private $message = "Please login to update your profile";
 	private $success = false;
 
 	function handle(Request $request) {
 		$user = Session::getUser();
-
-		if( isset( $request->post ) ) {
+		if( $user == null ){
+			$this->error = true;
+		}
+		
+		if( isset( $request->post ) && $user != null ) {
 			//todo
 			if($user->name == null || ($user->name != null && $request["name"] != $user->name)) {
 				$user->name = $request["name"];
@@ -56,7 +60,7 @@ HTML;
 	function renderForm() {
 		$URLPATH = URLPATH;
 		if( $this->error )
-			$error = "<h2>$this->error</h2>";
+			$error = "<h2>$this->message</h2>";
 		else
 			$error = "";
 
@@ -66,17 +70,17 @@ HTML;
 		$company = "";
 		$title = "";
 		$website = "";
+		$img = "default.png";
 
 		if( $user ) {
 			$name = $user->name;
 			$company = $user->company;
 			$title = $user->title;
 			$website = $user->website;
-		}
-
-		$img = "default.png";
-		if( is_readable( APPDIR . "/docroot/profiles/{$user->id}.png" ) ) {
-			$img = $user->id . ".png";
+			if( is_readable( APPDIR . "/docroot/profiles/{$user->id}.png" ) ) {
+				$img = $user->id . ".png";
+			}
+			
 		}
 
 		echo <<<HTML
