@@ -52,6 +52,7 @@ var randomColor = function() {
 var transformJSON = function (rawJson) {
 	var nodes = new Array();
 	var edges = new Array();
+	var datas = new Array();
 	var edgeCount = 0;
 	$.each(rawJson, function(x, set) {
 		if( set.name != null ) {
@@ -60,6 +61,7 @@ var transformJSON = function (rawJson) {
 			nodes[x] = set.email;
 		}
 		var j = nodes[x];
+		datas[x] = set.data
 
 		$.each(set.targets, function(y, edge) {
 			var newEdge = new Array();
@@ -78,5 +80,5 @@ var transformJSON = function (rawJson) {
 
 	//$.each(edges, function(x, edge) { alert(edge) });
 
-	return { "nodes": nodes, "edges": edges };
+	return { "nodes": nodes, "edges": edges, "datas": datas };
 }

@@ -127,7 +127,7 @@ Router::getDefault()->registerHandler( "/graph/view-subjective", function($reque
 
 	//id start
 	$graph = array(
-		$me->id => array( "name" => $me->name, "email" => $me->email, "targets" => array() )
+		$me->id => array( "name" => $me->name, "email" => $me->email, "targets" => array(), 'data' => array( 'id'=>$me->id) )
 	);
 	$id_list = array($me->id);
 
@@ -165,7 +165,7 @@ Router::getDefault()->registerHandler( "/graph/view-subjective", function($reque
 		$id_list = array();
 		foreach( $statement->fetchAll() as $row ){
 			if( !isset($graph[$row['id']]) ) {
-				$graph[$row['id']] = array( "name" => $row['name'], "email" => $row['email'], "targets" => array(), );
+				$graph[$row['id']] = array( "name" => $row['name'], "email" => $row['email'], "targets" => array(), "data" => array('id' => (int)$row['id']) );
 			}
 
 			//add this inbound edge to the outbound node

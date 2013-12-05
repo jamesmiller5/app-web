@@ -84,12 +84,17 @@
 		return node;
 	};
 
-	Graph.prototype.addNodes = function() {
+	Graph.prototype.addNodes = function(nodes, datas) {
 		// accepts variable number of arguments, where each argument
 		// is a string that becomes both node identifier and label
-		for (var i = 0; i < arguments.length; i++) {
-			var name = arguments[i];
-			var node = new Node(name, {label:name});
+		for (var i = 0; i < nodes.length; i++) {
+			var name = nodes[i];
+			var data = {};
+			if( datas ){ 
+				data = datas[i] || {};
+			}
+			data.label = name;
+			var node = new Node(name, data);
 			this.addNode(node);
 		}
 	};
@@ -186,7 +191,7 @@
 		}
 
 		if ('nodes' in json || 'edges' in json) {
-			this.addNodes.apply(this, json['nodes']);
+			this.addNodes.apply(this, Array(json['nodes'], json['datas']));
 			this.addEdges.apply(this, json['edges']);
 		}
 	}
