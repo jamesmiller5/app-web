@@ -251,7 +251,9 @@ jQuery.fn.springy = function(params) {
 			ctx.clearRect(s.x - boxWidth/2, s.y - 10, boxWidth, 20);
 
 			// fill background
-			if (selected !== null && nearest.node !== null && selected.node.id === node.id) {
+			if (node.data.color) {
+				ctx.fillStyle = node.data.color;
+			} else if (selected !== null && nearest.node !== null && selected.node.id === node.id) {
 				ctx.fillStyle = "#FFFFE0";
 			} else if (nearest !== null && nearest.node !== null && nearest.node.id === node.id) {
 				ctx.fillStyle = "#EEEEEE";
