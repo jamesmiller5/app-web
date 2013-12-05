@@ -21,7 +21,7 @@ HTML;
 		echo <<<HTML
 		<h1>Welcome to APP.</h1>
 		<h2>More functionality coming soon.</h2>
-		<p>Please login or register to continue</p>
+		<p>If you don't have an account, please <a href="/register">register</a>.</p>
 
 HTML;
 		}
@@ -36,6 +36,7 @@ require APPDIR . "app/pages/verify.php";
 require APPDIR . "app/pages/register.php";
 require APPDIR . "app/pages/graph.php";
 require APPDIR . "app/pages/trust.php";
+require APPDIR . "app/pages/profile.php";
 
 //demo page, just a list of links
 class Demo extends Page {

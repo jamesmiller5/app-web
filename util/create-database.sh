@@ -6,7 +6,11 @@ PRAGMA foreign_keys = ON;
 create table if not exists User(
   id integer primary key autoincrement,
   email string not null,
-  password string not null
+  password string not null,
+  name string null,
+  company string null,
+  title string null,
+  website string null
 );
 
 create table if not exists Email(
@@ -18,7 +22,6 @@ create table if not exists Citation(
   id integer primary key autoincrement,
   subject string not null,
   description string not null,
-  source string not null,
   foreign key(subject) references Subject(name)
 );
 

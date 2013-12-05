@@ -13,6 +13,7 @@ class Page {
 	//header is a php function
 	function head() {
 		$ASSETS = "/assets/";
+		$URLPATH = URLPATH;
 		echo <<<HTML
 <!DOCTYPE html>
 <html>
@@ -22,6 +23,7 @@ class Page {
   		<meta name="viewport" content="width=device-width">
 
   		<link rel="stylesheet" href="{$ASSETS}css/foundation.min.css">
+  		<link rel="stylesheet" href="{$ASSETS}css/app.css">
   		<script src="{$ASSETS}js/vendor/custom.modernizr.js"></script>
 		<script src="{$ASSETS}js/vendor/jquery.min.js"></script>
 	</head>
@@ -29,12 +31,13 @@ class Page {
 	<body>
 		<header class="row">
 			<div class="large-12 columns">
-				<h2 style="text-align:center">Authority Connections</h2>
+				<h2 style="text-align:center"><a href="{$URLPATH}" style="color: rgb(34,34,34);">Authority Connections</a></h2>
 				<hr />
 			</div>
 		</header>
 
 		<nav class="top-bar large-11 columns large-centered" style="overflow: hidden">
+		<section class="top-bar-section" style="left: 0%;">
 HTML;
 		if( Session::getUser() == NULL ) {
 			$this->loginBox();
@@ -43,6 +46,7 @@ HTML;
 		}
 
 		echo <<<HTML
+		</section>
 		</nav>
 		<section style="margin: auto 7%">
 HTML;
@@ -58,11 +62,6 @@ HTML;
 				<h5 style="text-align:center">By James Miller, Mitchell Mounts, Andrew Mack, and David Zinn</h5>
 			</div>
 		</footer>
-		<script>
-		document.write('<script src=' +
-		('__proto__' in {} ? '{$ASSETS}js/vendor/zepto' : '{$ASSETS}js/vendor/jquery.min') +
-		'.js><\/script>')
-		</script>
 
 		<script src="{$ASSETS}js/foundation.min.js"></script>
 
@@ -77,7 +76,12 @@ HTML;
 	function loginBox() {
 		$URLPATH = URLPATH;
 		echo <<<HTML
-		  <section class="top-bar-section" style="left: 0%;">
+		<ul class="title-area hide-for-small">
+            <!-- Title Area -->
+            <a href="{$URLPATH}register" class="button">Register</input>
+            <li class="toggle-topbar"><a href="#"></a></li>
+          </ul>
+
             <!-- Login Field -->
             <ul class="right">
             	<form method="post" action="{$URLPATH}login">
@@ -91,7 +95,6 @@ HTML;
 			<button type="submit" class="small-2 columns button">Login</input>
             	</form>
             </ul>
-          </section>
 HTML;
 	}
 
@@ -99,37 +102,30 @@ HTML;
 		$URLPATH = URLPATH;
 		$name = "";
 		$user = Session::getUser();
-		if( isset( $user ) )
-			$name = $user->email;
+		if( isset( $user ) ) {
+			if( $user->name != "" ) {
+				$name = $user->name;
+			} else {
+				$name = $user->email;
+			}
+		}
 
 		echo <<<HTML
 		  <ul class="title-area hide-for-small">
             <!-- Title Area -->
             <li class="name">
               	<h1>
-                	<a href="#">{$name}</a>
+                	<a href="{$URLPATH}">{$name}</a>
               	</h1>
             </li>
             <li class="toggle-topbar"><a href="#"></a></li>
           </ul>
 
           <ul class="right">
-<!--
-              <li class=""><a href="#">Profile</a></li>
-              <li class=""><a href="#">Trust Network</a></li>
-              <li class=""><a href="#">Subjective Network</a></li>
-              <li class="has-dropdown not-click">
-                <a href="#">Graph Views</a>
-                <ul class="dropdown"><li class="title back js-generated"><h5><a href="#">Back</a></h5></li>
-                  <li class=""><a href="#">Subjective Network</a></li>
-                  <li class=""><a href="#">Trust Network</a></li>
-                </ul>
-              </li>
--->
-				<form method="get" action="{$URLPATH}login">
-					<input type="hidden" name="logout" />
-				  <input type="submit" class="signout" value="Logout" />
-				</form>
+	      <li class=""><a href="{$URLPATH}profile">Profile</a></li>
+	      <li class=""><a href="{$URLPATH}trust">Add Trust</a></li>
+              <li class=""><a href="{$URLPATH}graph">Trust Network</a></li>
+	      <li><a class="button" method="get" href="{$URLPATH}login?logout=true">Logout</a></li>
           </ul>
 HTML;
 	}

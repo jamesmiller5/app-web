@@ -76,22 +76,6 @@ jQuery.fn.springy = function(params) {
 	var nearest = null;
 	var dragged = null;
 
-	jQuery(canvas).mousedown(function(e) {
-		var pos = jQuery(this).offset();
-		var p = fromScreen({x: e.pageX - pos.left, y: e.pageY - pos.top});
-		selected = nearest = dragged = layout.nearest(p);
-
-		if (selected.node !== null) {
-			dragged.point.m = 10000.0;
-
-			if (nodeSelected) {
-				nodeSelected(selected.node);
-			}
-		}
-
-		renderer.start();
-	});
-
 	// Basic double click handler
 	jQuery(canvas).dblclick(function(e) {
 		var pos = jQuery(this).offset();
@@ -101,23 +85,6 @@ jQuery.fn.springy = function(params) {
 		if (node && node.data && node.data.ondoubleclick) {
 			node.data.ondoubleclick();
 		}
-	});
-
-	jQuery(canvas).mousemove(function(e) {
-		var pos = jQuery(this).offset();
-		var p = fromScreen({x: e.pageX - pos.left, y: e.pageY - pos.top});
-		nearest = layout.nearest(p);
-
-		if (dragged !== null && dragged.node !== null) {
-			dragged.point.p.x = p.x;
-			dragged.point.p.y = p.y;
-		}
-
-		renderer.start();
-	});
-
-	jQuery(window).bind('mouseup',function(e) {
-		dragged = null;
 	});
 
 	Springy.Node.prototype.getWidth = function() {
