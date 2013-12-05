@@ -69,17 +69,23 @@ class User {
 	public $email;
 	public $password;
 	public $name;
+	public $company;
+	public $title;
+	public $website;
 
 	function update() {
 		$statement = DB::getPDO()->prepare(
-			"UPDATE user SET password=:password, email=:email, name=:name WHERE id=:id;"
+			"UPDATE user SET password=:password, email=:email, name=:name, company=:company, title=:title, website=:website WHERE id=:id;"
 		);
 
 		$ret = $statement->execute( array(
 			":id" => $this->id,
 			":email" => $this->email,
 			":password" => $this->password,
-			":name" => $this->name
+			":name" => $this->name,
+			":company" => $this->company,
+			":title" => $this->title,
+			":website" => $this->website
 		) );
 	}
 
@@ -103,7 +109,7 @@ class User {
 		if( (int)$this->id == 0 ) {
 			$this->id = null;
 			$statement = DB::getPDO()->prepare(
-				"INSERT INTO user VALUES (:id, :email, :password, null);"
+				"INSERT INTO user VALUES (:id, :email, :password, null, null, null, null);"
 			);
 		} else {
 			$statement = DB::getPDO()->prepare(
