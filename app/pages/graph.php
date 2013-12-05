@@ -53,19 +53,6 @@ class Graph extends Page {
 		function graphDraw(level, topic) {
 			$.getJSON( "/graph/view-subjective", {"level": level, "topic": topic} )
 				.done( function(json) {
-<<<<<<< HEAD
-					var graph = new Springy.Graph();
-					graph.loadJSON(transformJSON(json));
-
-					var layout = new Springy.Layout.ForceDirected( graph,
-						100.0,
-						25.0,
-						0.1 );
-
-					var springy = jQuery('#springydemo').springy({
-						graph: graph
-					});
-=======
 					if( gHandle ) {
 						for( var i in gHandle.nodeSet ) {
 							gHandle.removeNode(gHandle.nodeSet[i]);
@@ -80,7 +67,7 @@ class Graph extends Page {
 					if( !att ) {
 						var layout = new Springy.Layout.ForceDirected( gHandle,
 							100.0,
-							100.0,
+							25.0,
 							0.1 );
 
 						var springy = jQuery('#springydemo').springy({
@@ -88,7 +75,6 @@ class Graph extends Page {
 						});
 						att = true;
 					}
->>>>>>> e8883013c9237e72d257e91a9099e12cda60cc24
 				})
 				.fail(function( jqxhr, textStatus, error ) {
 					var err = textStatus + ", " + error;
