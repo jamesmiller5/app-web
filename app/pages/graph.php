@@ -88,6 +88,69 @@ Router::getDefault()->registerHandler( "/graph/view-subjective", function($reque
 		['src' => 'Andrew', 'targets' => [ ] ],
 	);
 
+
+	$level = 3;
+
+	//cap level at 6
+	$level = min(6,$level);
+
+	$me = Session::getUser();
+	if( !isset($me) )
+		exit();
+
+
+	//id start
+	$graph = array(
+		$me->id => array( "name" => $me->name, "email" => $me->email, "targets" => array() )
+	);
+	$id_list = array($me->id);
+
+	$i = 0;
+	while( $i < $level && count($id_list) > 0 ) {
+		//first get a k
+		$statement = DB::getPDO()->prepare(
+			"SELECT
+				t.trusterId, r.id, r.name, r.email, c.subject, c.description
+			FROM
+				Trust as t
+			INNER JOIN
+				User as r ON t.trusteeId = r.id
+			INNER JOIN
+				Citation as c ON t.citeId = c.id
+			WHERE
+				t.trusterId IN(" . implode( ",", $id_list ) . ")
+			"
+		);
+
+		$statement->setFetchMode(PDO::FETCH_NAMED);
+		$ret = $statement->execute();
+		if(!$ret) {
+			decho($ret);
+			exit();
+		}
+
+		$id_list = array();
+		foreach( $statement->fetchAll() as $row ){
+			if( !isset($graph[$row['id']]) ) {
+				$graph[$row['id']] = array( "name" => $row['name'], "email" => $row['email'], "targets" => array(), );
+			}
+
+			//add this inbound edge to the outbound node
+			$out = $graph[$row['trusterId']];
+
+			if( !isset($out) ) {
+				decho($graph);
+				exit();
+			}
+
+			$out['targets'][] = array( "name" => $row['name'], 'email' => $row['email'], 'topic' => $row['subject'] );
+			$id_list[] = $row['id'];
+		}
+
+		$i++;
+	}
+
+
 	header('Content-type: application/json');
-	echo json_encode( $data, JSON_PRETTY_PRINT );
+	echo json_encode( array_values($graph), JSON_PRETTY_PRINT );
 });
