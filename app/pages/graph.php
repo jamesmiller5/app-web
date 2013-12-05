@@ -90,9 +90,21 @@ Router::getDefault()->registerHandler( "/graph/view-subjective", function($reque
 
 
 	$level = 3;
+	$topic_list = null;
 
-	//cap level at 6
+	if( isset( $request['level'] ) )
+		$level = (int) $request['level'];
+
+	if( isset( $request['topic'] ) )
+		if( !is_array( $request['topic'] ) ) {
+			$topic_list = array( $request['topic'] );
+		} else {
+			$topic_list = $request['topic'];
+		}
+
+	//cap level between 1 and 6
 	$level = min(6,$level);
+	$level = max(1,$level);
 
 	$me = Session::getUser();
 	if( !isset($me) )
@@ -119,11 +131,16 @@ Router::getDefault()->registerHandler( "/graph/view-subjective", function($reque
 				Citation as c ON t.citeId = c.id
 			WHERE
 				t.trusterId IN(" . implode( ",", $id_list ) . ")
-			"
+			" . ( ( !isset($topic_list) ) ? "" :
+				" AND c.subject IN( ?" . str_repeat( ",?", count($topic_list)-1 ) . ")" )
 		);
 
 		$statement->setFetchMode(PDO::FETCH_NAMED);
-		$ret = $statement->execute();
+		if( !isset($topic_list) ) {
+			$ret = $statement->execute();
+		} else {
+			$ret = $statement->execute($topic_list);
+		}
 		if(!$ret) {
 			decho($ret);
 			exit();
