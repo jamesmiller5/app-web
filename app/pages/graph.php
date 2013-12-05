@@ -136,14 +136,12 @@ Router::getDefault()->registerHandler( "/graph/view-subjective", function($reque
 			}
 
 			//add this inbound edge to the outbound node
-			$out = $graph[$row['trusterId']];
-
-			if( !isset($out) ) {
+			if( !isset($graph[$row['trusterId']]) ) {
 				decho($graph);
 				exit();
 			}
 
-			$out['targets'][] = array( "name" => $row['name'], 'email' => $row['email'], 'topic' => $row['subject'] );
+			$graph[$row['trusterId']]['targets'][] = array( "name" => $row['name'], 'email' => $row['email'], 'topic' => $row['subject'] );
 			$id_list[] = $row['id'];
 		}
 
