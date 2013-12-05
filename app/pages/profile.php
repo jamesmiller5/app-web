@@ -1,6 +1,6 @@
 <?php
 
-class Profile extends Page {	
+class Profile extends Page {
 	private $error = false;
 	private $message = "Please login to update your profile";
 	private $success = false;
@@ -31,7 +31,11 @@ class Profile extends Page {
 				$user->website = $request["website"];
 				$this->success = true;
 			}
-			
+
+			if( count( $request->files ) && isset( $request->files['icon'] ) ) {
+				$request->files['icon']->moveTo( APPDIR . "/docroot/profiles/{$user->id}.png" );
+			}
+
 			if($this->success) {
 				$user->update();
 			}
@@ -49,7 +53,7 @@ HTML;
 				<h2>Profile Updated!</h2>
 HTML;
 		}
-		
+
 		$this->renderForm();
 	}
 
@@ -59,28 +63,35 @@ HTML;
 			$error = "<h2>$this->message</h2>";
 		else
 			$error = "";
-			
+
 		$user = Session::getUser();
 
 		$name = "";
 		$company = "";
 		$title = "";
 		$website = "";
-		
+		$img = "default.png";
+
 		if( $user ) {
 			$name = $user->name;
 			$company = $user->company;
 			$title = $user->title;
 			$website = $user->website;
+			if( is_readable( APPDIR . "/docroot/profiles/{$user->id}.png" ) ) {
+				$img = $user->id . ".png";
+			}
+			
 		}
 
 		echo <<<HTML
 		$error
-		<form method="post" action="{$URLPATH}profile">
+		<form method="post" action="{$URLPATH}profile" enctype="multipart/form-data">
+			<img src="{$URLPATH}profiles/{$img}" />
+			<label for="i">Image:</label><input type="file" id="i" name="icon" />
 			<label for="n">Name:</label><input type="text" id="n" name="name" value="{$name}" />
-			<label for="n">Company:</label><input type="text" id="c" name="company" value="{$company}" />
-			<label for="n">Title:</label><input type="text" id="t" name="title" value="{$title}" />
-			<label for="n">Website:</label><input type="text" id="w" name="website" value="{$website}" />
+			<label for="c">Company:</label><input type="text" id="c" name="company" value="{$company}" />
+			<label for="t">Title:</label><input type="text" id="t" name="title" value="{$title}" />
+			<label for="w">Website:</label><input type="text" id="w" name="website" value="{$website}" />
 			<input type="submit" />
 		</form>
 HTML;
