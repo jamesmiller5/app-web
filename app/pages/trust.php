@@ -11,7 +11,7 @@ class Trust extends Page {
 		if( isset( $request->post ) ) {
 			// Error message if not all fields are set
 			$this->message = "Post";
-			if ( !isset($request['subject']) || !isset($request['description']) || !isset($request['target']) ) {
+			if ( $request['subject'] == "" || $request['description'] == "" || $request['target'] == "" ) {
 			  $this->message = "Please fill out all citation areas.";
 			} else {
 				//find if subject exists
