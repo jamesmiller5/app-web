@@ -70,29 +70,3 @@ var transformJSON = function (rawJson) {
 
 	return { "nodes": nodes, "edges": edges };
 }
-
-jQuery(function(){
-
-	$.getJSON( "/graph/view-subjective", {} )
-	.done( function(json) {
-		console.debug("json", json);
-		console.debug("json-hard", rawJSON);
-
-		var graph = new Springy.Graph();
-		graph.loadJSON(transformJSON(json));
-
-		var layout = new Springy.Layout.ForceDirected( graph,
-			100.0,
-			100.0,
-			0.1 );
-
-		var springy = jQuery('#springydemo').springy({
-			graph: graph
-		});
-	})
-	.fail(function( jqxhr, textStatus, error ) {
-		var err = textStatus + ", " + error;
-		console.log( "Request Failed: " + err );
-	});
-
-});
