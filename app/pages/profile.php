@@ -12,6 +12,7 @@ class Profile extends Page {
 			if($user->name == null || ($user->name != null && $request["name"] != $user->name)) {
 				$user->name = $request["name"];
 				$user->update();
+				$this->success = true;
 			}
 		}
 		//no errors? lets render!
@@ -23,16 +24,12 @@ class Profile extends Page {
 		<h1> Profile </h1>
 HTML;
 		if( $this->success ) {
-			$this->renderSuccess();
-		} else {
-			$this->renderForm();
-		}
-	}
-
-	function renderSuccess() {
-		echo <<<HTML
-		<h2>Profile Updated!</h2>
+			echo <<<HTML
+				<h2>Profile Updated!</h2>
 HTML;
+		}
+		
+		$this->renderForm();
 	}
 
 	function renderForm() {
