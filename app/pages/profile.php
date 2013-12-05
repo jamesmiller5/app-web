@@ -10,7 +10,7 @@ class Profile extends Page {
 		if( $user == null ){
 			$this->error = true;
 		}
-		
+
 		if( isset( $request->post ) && $user != null ) {
 			//todo
 			if($user->name == null || ($user->name != null && $request["name"] != $user->name)) {
@@ -80,7 +80,7 @@ HTML;
 			if( is_readable( APPDIR . "/docroot/profiles/{$user->id}.png" ) ) {
 				$img = $user->id . ".png";
 			}
-			
+
 		}
 
 		echo <<<HTML

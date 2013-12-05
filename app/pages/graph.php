@@ -28,6 +28,9 @@ class Graph extends Page {
 				Levels: <input type="text" text="1" id="levels" name="levels" size="3" disabled/>
 				<input type="checkbox" name="topic" value="C++">C++<br>
 				<input type="checkbox" name="topic" value="Java">Java<br>
+				<input type="checkbox" name="topic" value="PHP">PHP<br>
+				<input type="checkbox" name="topic" value="Python">Python<br>
+				<input type="checkbox" name="topic" value="WWII History">WWII History<br>
 				<input type="submit" value="Submit">
 			</form>
 		</div>
