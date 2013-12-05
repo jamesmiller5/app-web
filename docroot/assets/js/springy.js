@@ -89,8 +89,13 @@
 		// is a string that becomes both node identifier and label
 		for (var i = 0; i < arguments.length; i++) {
 			var name = arguments[i];
-			var node = new Node(name, {label:name});
-			this.addNode(node);
+			if(this.nodes.length === 0){
+				var node = new Node(name, {label:name, color: "#CC333F"});
+				this.addNode(node);
+			} else {
+				var node = new Node(name, {label:name});
+				this.addNode(node);
+			}
 		}
 	};
 
