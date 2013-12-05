@@ -51,10 +51,13 @@ class Trust extends Page {
 						);
 
 						//$this->message = "truster " . $user->id . "	trustee " . $ret2[0]['id'] . " cite	" . $this->id;
-
-						$insert2->execute(array(':trusterId'=>$user->id, ':trusteeId'=>$ret2[0]['id'], ':citeId'=>$this->id));
-
-						$this->message = "Citation Created!";
+						if( $user == null ){
+							$this->message = "Please login first.";
+						} else { 
+							$insert2->execute(array(':trusterId'=>$user->id, ':trusteeId'=>$ret2[0]['id'], ':citeId'=>$this->id));
+							
+							$this->message = "Citation Created!";
+						}
 					}
 				}
 			}
