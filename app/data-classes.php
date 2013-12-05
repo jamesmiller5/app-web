@@ -68,6 +68,20 @@ class User {
 	public $id;
 	public $email;
 	public $password;
+	public $name;
+
+	function update() {
+		$statement = DB::getPDO()->prepare(
+			"UPDATE user SET password=:password, email=:email, name=:name WHERE id=:id;"
+		);
+
+		$ret = $statement->execute( array(
+			":id" => $this->id,
+			":email" => $this->email,
+			":password" => $this->password,
+			":name" => $this->name
+		) );
+	}
 
 	function load($id) {
 		//fetch the results and set our instance variables to them
@@ -89,7 +103,7 @@ class User {
 		if( (int)$this->id == 0 ) {
 			$this->id = null;
 			$statement = DB::getPDO()->prepare(
-				"INSERT INTO user VALUES (:id, :email, :password);"
+				"INSERT INTO user VALUES (:id, :email, :password, null);"
 			);
 		} else {
 			$statement = DB::getPDO()->prepare(

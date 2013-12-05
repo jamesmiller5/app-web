@@ -41,6 +41,7 @@ class Verify extends Page {
 					$user->id = NULL;
 					$user->email = $request->post['email'];
 					$user->password = $request->post['password'];
+					$user->name = NULL;
 					$user->store();
 
 					//login as this user as well
