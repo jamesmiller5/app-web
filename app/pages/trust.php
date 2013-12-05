@@ -69,7 +69,7 @@ class Trust extends Page {
 		if( $this->message )
 			$message = "<h2>{$this->message}</h2>";
 		else
-			$message = "<h3>No message.</h3>";
+			$message = "";
 
 		echo <<<HTML
 		$message
