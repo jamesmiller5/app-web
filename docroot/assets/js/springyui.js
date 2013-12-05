@@ -101,6 +101,9 @@ jQuery.fn.springy = function(params) {
 		if (node && node.data && node.data.ondoubleclick) {
 			node.data.ondoubleclick();
 		}
+		if (node && node.data && node.data.id) {
+			window.location = "/profile/view?id="+node.data.id;
+		}
 	});
 
 	jQuery(canvas).mousemove(function(e) {
