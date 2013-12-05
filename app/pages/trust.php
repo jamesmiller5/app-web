@@ -31,26 +31,28 @@ class Trust extends Page {
 					);
 					$statement2->execute( array( $request->post['target'] ) );
 
-					$ret2 = $statement2->fetchColumn();
+					$ret2 = $statement2->fetchAll();
 
 					if (!$ret2) {
 						$this->message = "We don't know the specified user.";
 					} else {
 						// User and subject are valid, insert into database.
 						$insert = DB::getPDO()->prepare(
-							"insert into citation values(:subject,:description,:source)"
+							"insert into citation values(:id,:subject,:description,:source)"
 						);
-						$insert->execute(array(':email'=>$request->post['subject'], ':token'=>$request->post['description'], ':source'=>"none"));
+						$insert->execute(array(':id'=>NULL, ':subject'=>$request->post['subject'], ':description'=>$request->post['description'], ':source'=>"none"));
 
 						// Get return object ID
 						$this->id = (int)DB::getPDO()->lastInsertId();
 						
 						// Create new Trust and store it
-						$trust = new Trust();
-						$trust->trusterId = $user->id;
-						$trust->trusteeId = $ret2->id;
-						$trust->citeId = $this->id;
-						$trust->store();
+						$insert2 = DB::getPDO()->prepare(
+							"insert into trust values(:trusterId,:trusteeId,:citeId)"
+						);
+						
+						//$this->message = "truster " . $user->id . "	trustee " . $ret2[0]['id'] . " cite	" . $this->id;		
+
+						$insert2->execute(array(':trusterId'=>$user->id, ':trusteeId'=>$ret2[0]['id'], ':citeId'=>$this->id));
 
 						$this->message = "Citation Created!";
 					}
@@ -73,13 +75,13 @@ class Trust extends Page {
 		$message
 		<div class="row add-citation">
 			<h1 style="text-align:center">Add Citation</h1>
-			<form name="input" method="post" action="{$URLPATH}trust">
+			<form method="post" action="{$URLPATH}trust">
 					<h4 class="columns" style="width:110px">I trust</h4>
-						<input class="small-2 columns" type="text" style="width:100px" size="10" placeholder="Jim" id="target" />
+						<input class="small-2 columns" type="text" style="width:100px" size="10" placeholder="Jim" name="target" />
 					<h4 class="columns" style="width:100px">about</h4>
-						<input class="small-2 columns" style="width:100px" type="text" size="10" placeholder="C++" id="subject"/>
+						<input class="small-2 columns" style="width:100px" type="text" size="10" placeholder="C++" name="subject"/>
 					<h4 class="small-2 columns">because</h4><br/>
-						<textarea rows="4" cols="15" placeholder="What are your reasons?" id="description"></textarea>
+						<textarea rows="4" cols="15" placeholder="What are your reasons?" name="description"></textarea>
 						<input type="submit" value="Submit" class="small button" />
 			</form>
 		</div>
