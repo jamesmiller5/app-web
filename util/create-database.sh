@@ -6,7 +6,8 @@ PRAGMA foreign_keys = ON;
 create table if not exists User(
   id integer primary key autoincrement,
   email string not null,
-  password string not null
+  password string not null,
+  name string null
 );
 
 create table if not exists Email(
