@@ -7,4 +7,7 @@ insert into Email values("foo@bar", "thisisfoobar123");
 insert into Email values("bar@foo", "456barfoo");
 
 insert into User(email,password) values("foo@bar", "number");
+
+insert into Subject values("C++");
+insert into Subject values("Java");
 INSERTDATA
