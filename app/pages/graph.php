@@ -117,12 +117,14 @@ Router::getDefault()->registerHandler( "/graph/view-subjective", function($reque
 	);
 	$id_list = array($me->id);
 
+	$cit_list = array();
+
 	$i = 0;
 	while( $i < $level && count($id_list) > 0 ) {
 		//first get a k
 		$statement = DB::getPDO()->prepare(
 			"SELECT
-				t.trusterId, r.id, r.name, r.email, c.subject, c.description
+				t.trusterId, r.id, r.name, r.email, c.subject, c.description, c.id as citeId
 			FROM
 				Trust as t
 			INNER JOIN
@@ -158,8 +160,11 @@ Router::getDefault()->registerHandler( "/graph/view-subjective", function($reque
 				exit();
 			}
 
-			$graph[$row['trusterId']]['targets'][] = array( "name" => $row['name'], 'email' => $row['email'], 'topic' => $row['subject'] );
-			$id_list[] = $row['id'];
+			if( !isset( $cit_list[$row['citeId']] ) ) {
+				$graph[$row['trusterId']]['targets'][] = array( "name" => $row['name'], 'email' => $row['email'], 'topic' => $row['subject'] );
+				$id_list[] = $row['id'];
+				$cit_list[$row['citeId']] = true;
+			}
 		}
 
 		$i++;
