@@ -33,6 +33,9 @@ class Graph extends Page {
 		</div>
 		<script src="{$ASSETS}js/slider.js"></script>
 		<script>
+		var gHandle = null;
+		var att = false;
+
 		function graphHandle(form) {
 			var list = Array();
 			var level = document.getElementById('levels').value;
@@ -50,6 +53,7 @@ class Graph extends Page {
 		function graphDraw(level, topic) {
 			$.getJSON( "/graph/view-subjective", {"level": level, "topic": topic} )
 				.done( function(json) {
+<<<<<<< HEAD
 					var graph = new Springy.Graph();
 					graph.loadJSON(transformJSON(json));
 
@@ -61,6 +65,30 @@ class Graph extends Page {
 					var springy = jQuery('#springydemo').springy({
 						graph: graph
 					});
+=======
+					if( gHandle ) {
+						for( var i in gHandle.nodeSet ) {
+							gHandle.removeNode(gHandle.nodeSet[i]);
+						}
+					} else {
+						gHandle = new Springy.Graph();
+					}
+
+
+					gHandle.loadJSON(transformJSON(json));
+
+					if( !att ) {
+						var layout = new Springy.Layout.ForceDirected( gHandle,
+							100.0,
+							100.0,
+							0.1 );
+
+						var springy = jQuery('#springydemo').springy({
+							graph: gHandle
+						});
+						att = true;
+					}
+>>>>>>> e8883013c9237e72d257e91a9099e12cda60cc24
 				})
 				.fail(function( jqxhr, textStatus, error ) {
 					var err = textStatus + ", " + error;

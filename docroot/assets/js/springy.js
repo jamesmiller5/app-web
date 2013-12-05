@@ -90,7 +90,7 @@
 		for (var i = 0; i < arguments.length; i++) {
 			var name = arguments[i];
 			if(this.nodes.length === 0){
-				var node = new Node(name, {label:name, color: "#CC333F"});
+				var node = new Node(name, {label:name, color: "#EDC951"});
 				this.addNode(node);
 			} else {
 				var node = new Node(name, {label:name});

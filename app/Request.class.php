@@ -116,26 +116,9 @@ class Request extends ArrayObject {
 		else
 			$rarray = new ArrayObject( array(), $flags );
 
-		foreach( $farray as $field_name )
-		{
-			if( isset( $farray[$field_name]['tmp_name'] ) )
-			{
-				$rarray[$field_name] = new ArrayObject();
-
-				if( is_array( $farray[$field_name]['tmp_name'] ) )
-				{
-					$count = 0;
-					$limit = count( $farray[$field_name]['tmp_name'] );
-
-					while( $count < $limit )
-					{
-						$rarray[$field_name][] = new PostFile( $farray[$field_name][$count] );
-						$count++;
-					}
-				}
-				else
-					$rarray[$field_name] = new PostFile( $farray[$field_name] );
-			}
+		foreach( $farray as $name => $props ) {
+			if( $props['error'] == UPLOAD_ERR_OK )
+				$rarray[$name] = new PostFile( $props );
 		}
 
 		return $rarray;
@@ -159,3 +142,30 @@ class Request extends ArrayObject {
 		exit(0);
 	}
 }
+
+class PostFile extends SplFileObject {
+	public $name;
+	public $type;
+	public $size;
+	public $tmp_name;
+	public $error;
+
+	function __construct( $file_props, $open_mode = "r", $use_include_path = false, $context = null, $postName = null ) {
+		parent::__construct( $file_props['tmp_name'], $open_mode, $use_include_path, $context );
+
+		$this->name = $file_props['name'];
+		$this->type = $file_props['type'];
+		$this->size = $file_props['size'];
+		$this->tmp_name = $file_props['tmp_name'];
+		$this->error = $file_props['error'];
+	}
+
+	function hasError() {
+		return $this->error != UPLOAD_ERR_OK;
+	}
+
+	function moveTo( $destination ) {
+		return move_uploaded_file( $this->tmp_name, $destination );
+	}
+}
+
