@@ -38,19 +38,19 @@ class Trust extends Page {
 					} else {
 						// User and subject are valid, insert into database.
 						$insert = DB::getPDO()->prepare(
-							"insert into citation values(:id,:subject,:description,:source)"
+							"insert into citation values(:id,:subject,:description)"
 						);
-						$insert->execute(array(':id'=>NULL, ':subject'=>$request->post['subject'], ':description'=>$request->post['description'], ':source'=>"none"));
+						$insert->execute(array(':id'=>NULL, ':subject'=>$request->post['subject'], ':description'=>$request->post['description']));
 
 						// Get return object ID
 						$this->id = (int)DB::getPDO()->lastInsertId();
-						
+
 						// Create new Trust and store it
 						$insert2 = DB::getPDO()->prepare(
 							"insert into trust values(:trusterId,:trusteeId,:citeId)"
 						);
-						
-						//$this->message = "truster " . $user->id . "	trustee " . $ret2[0]['id'] . " cite	" . $this->id;		
+
+						//$this->message = "truster " . $user->id . "	trustee " . $ret2[0]['id'] . " cite	" . $this->id;
 
 						$insert2->execute(array(':trusterId'=>$user->id, ':trusteeId'=>$ret2[0]['id'], ':citeId'=>$this->id));
 
@@ -58,7 +58,7 @@ class Trust extends Page {
 					}
 				}
 			}
-			
+
 		}
 		//no errors? lets render!
 		parent::headAndFoot( function() { $this->render(); } );
