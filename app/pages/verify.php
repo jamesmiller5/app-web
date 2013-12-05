@@ -8,7 +8,7 @@ class Verify extends Page {
 	function handle(Request $request) {
 		$this->email = (isset($request['email']) ) ? $request['email'] : "";
 		$this->token = (isset($request['token']) ) ? $request['token'] : "";
-		
+
 		if( isset( $request->post ) ) {
 			//todo
 			$userStmnt = DB::getPDO()->prepare(
@@ -31,7 +31,7 @@ class Verify extends Page {
 					|| 	!isset( $ret2[0] )
 					|| 	!($ret2[0]['address'] == $request->post['email']) ) {
 					$this->error = "Invalid email/token combination";
-				} else if(		strlen($request->post['password']) < 6 
+				} else if(		strlen($request->post['password']) < 6
 							||	strlen($request->post['password']) > 18
 							|| 	preg_match('/\s/', $request->post['password'])) {
 					$this->error = "Invalid password";
@@ -69,6 +69,7 @@ HTML;
 	function renderSuccess() {
 		echo <<<HTML
 		<h2>All Verified! Enjoy using APP</h2>
+		<h3 class="tip">Why not fillout your <a href="/profile">Profile</a>?</h3>
 HTML;
 	}
 
@@ -78,11 +79,11 @@ HTML;
 			$error = "<h2>$this->error</h2>";
 		else
 			$error = "";
-			
+
 		$e = htmlentities($this->email);
 		$t = htmlentities($this->token);
 
-		
+
 		echo <<<HTML
 		$error
 		<form method="post" action="{$URLPATH}verify">
