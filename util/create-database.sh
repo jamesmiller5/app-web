@@ -22,7 +22,6 @@ create table if not exists Citation(
   id integer primary key autoincrement,
   subject string not null,
   description string not null,
-  source string not null,
   foreign key(subject) references Subject(name)
 );
 
