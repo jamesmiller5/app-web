@@ -3,3 +3,5 @@
 config.ini
 sessions
 *.DS_Store
+docroot/profiles/*
+!docroot/profiles/default.png

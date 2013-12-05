@@ -28,6 +28,10 @@ class Profile extends Page {
 				$this->success = true;
 			}
 
+			if( count( $request->files ) && isset( $request->files['icon'] ) ) {
+				$request->files['icon']->moveTo( APPDIR . "/docroot/profiles/{$user->id}.png" );
+			}
+
 			if($this->success) {
 				$user->update();
 			}
@@ -70,9 +74,16 @@ HTML;
 			$website = $user->website;
 		}
 
+		$img = "default.png";
+		if( is_readable( APPDIR . "/docroot/profiles/{$user->id}.png" ) ) {
+			$img = $user->id . ".png";
+		}
+
 		echo <<<HTML
 		$error
-		<form method="post" action="{$URLPATH}profile">
+		<form method="post" action="{$URLPATH}profile" enctype="multipart/form-data">
+			<img src="{$URLPATH}profiles/{$img}" />
+			<label for="i">Image:</label><input type="file" id="i" name="icon" />
 			<label for="n">Name:</label><input type="text" id="n" name="name" value="{$name}" />
 			<label for="c">Company:</label><input type="text" id="c" name="company" value="{$company}" />
 			<label for="t">Title:</label><input type="text" id="t" name="title" value="{$title}" />
