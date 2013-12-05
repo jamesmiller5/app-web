@@ -94,3 +94,46 @@ HTML;
 	}
 }
 Router::getDefault()->register( "/profile", new Profile() );
+
+
+class ProfileView extends Page {
+	private $user;
+
+	function handle(Request $request) {
+		$this->user = new User();
+		if( !isset($request['id']) || false == $this->user->load($request['id']) ) {
+			//404
+			header("HTTP/1.1 404 Not Found");
+			return false;
+		}
+
+		//no errors? lets render!
+		parent::headAndFoot( function() { $this->render(); } );
+	}
+
+	function render() {
+		$user = $this->user;
+
+		$img = "default.png";
+		if( is_readable( APPDIR . "/docroot/profiles/{$user->id}.png" ) ) {
+			$img = $user->id . ".png";
+		}
+
+		$URLPATH = URLPATH;
+		$name = $user->name;
+		$company = $user->company;
+		$title = $user->title;
+		$website = $user->website;
+echo <<<HTML
+		<h1> Profile </h1>
+		<img src="{$URLPATH}profiles/{$img}" />
+		<label for="n">Name:</label><input type="text" id="n" name="name" value="{$name}" readonly />
+		<label for="c">Company:</label><input type="text" id="c" name="company" value="{$company}" readonly />
+		<label for="t">Title:</label><input type="text" id="t" name="title" value="{$title}" readonly />
+		<label for="w">Website:</label><input type="text" id="w" name="website" value="{$website}" readonly />
+HTML;
+	}
+}
+
+//simple view others profile
+Router::getDefault()->register("/profile/view", new ProfileView() );
