@@ -54,10 +54,16 @@ var transformJSON = function (rawJson) {
 	var edges = new Array();
 	var edgeCount = 0;
 	$.each(rawJson, function(x, set) {
-		nodes[x] = set.src;
+		if( set.name != null ) {
+			nodes[x] = set.name;
+		} else {
+			nodes[x] = set.email;
+		}
+		var j = nodes[x];
+
 		$.each(set.targets, function(y, edge) {
 			var newEdge = new Array();
-			newEdge[0] = set.src;
+			newEdge[0] = j;
 			newEdge[1] = edge.target;
 			var prop = { color: randomColor() };
 			newEdge[2] = prop;
