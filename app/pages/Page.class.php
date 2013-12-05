@@ -102,8 +102,13 @@ HTML;
 		$URLPATH = URLPATH;
 		$name = "";
 		$user = Session::getUser();
-		if( isset( $user ) )
-			$name = $user->email;
+		if( isset( $user ) ) {
+			if( $user->name != "" ) {
+				$name = $user->name;
+			} else {
+				$name = $user->email;
+			}
+		}
 
 		echo <<<HTML
 		  <ul class="title-area hide-for-small">
