@@ -96,4 +96,4 @@ HTML;
 	}
 }
 //register
-Router::getDefault()->register("/verify", new Verify());
+Router::getDefault()->register("/verify", Page::pagify("Verify") );

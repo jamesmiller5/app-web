@@ -92,19 +92,9 @@ class Graph extends Page {
 HTML;
 	}
 }
-Router::getDefault()->register( "/graph", new Graph() );
+Router::getDefault()->register( "/graph", Page::pagify("Graph") );
 
-Router::getDefault()->registerHandler( "/graph/view-subjective", function($request) {
-	$data = array(
-		['src' => "Jim", 'targets' => [
-				["target" => "Jaye", "topic" => "C++"],
-				['target' => 'Andrew', 'topic' => 'Ideas'],
-			]
-		],
-		['src' => 'Jaye', 'targets' => [ ] ],
-		['src' => 'Andrew', 'targets' => [ ] ],
-	);
-
+Router::getDefault()->register( "/graph/view-subjective", function($request) {
 
 	$level = 3;
 	$topic_list = null;
@@ -126,7 +116,6 @@ Router::getDefault()->registerHandler( "/graph/view-subjective", function($reque
 	$me = Session::getUser();
 	if( !isset($me) )
 		exit();
-
 
 	//id start
 	$graph = array(

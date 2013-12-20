@@ -61,4 +61,4 @@ HTML;
 HTML;
 	}
 }
-Router::getDefault()->register( "/login", new Login() );
+Router::getDefault()->register( "/login", Page::pagify("Login") );

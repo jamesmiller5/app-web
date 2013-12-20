@@ -12,42 +12,23 @@ class Router {
 		return Router::$default;
 	}
 
-	function registerHandler($path, callable $callme ) {
+	function register($path, callable $handler ) {
 		if( !isset( $path ) )
 			throw new Exception( __FILE__ . ":" . __FUNCTION__ . " \$path was null" );
 
-		if( $callme == null )
-			throw new Exception( __FILE__ . ":" . __FUNCTION__ . " \$page was null" );
+		if( $handler== null )
+			throw new Exception( __FILE__ . ":" . __FUNCTION__ . " \$handler was null" );
 
 		if( is_array( $path ) ) {
 			foreach( $path as $value ) {
-				$this->registerRaw( $value, $callme );
+				$this->register( $value, $handler );
 			}
 
 			return;
 		}
 
 		$path = trim( $path );
-		$this->handlers[$path] = $callme;
-	}
-
-	function register($path, Page $page ) {
-		if( !isset( $path ) )
-			throw new Exception( __FILE__ . ":" . __FUNCTION__ . " \$path was null" );
-
-		if( $page== null )
-			throw new Exception( __FILE__ . ":" . __FUNCTION__ . " \$page was null" );
-
-		if( is_array( $path ) ) {
-			foreach( $path as $value ) {
-				$this->register( $value, $page );
-			}
-
-			return;
-		}
-
-		$path = trim( $path );
-		$this->handlers[$path] = $page;
+		$this->handlers[$path] = $handler;
 	}
 
 	function route( Request $request ) {
@@ -110,10 +91,7 @@ class Router {
 			}
 		}
 
-		if( is_callable( $bestHandler ) ) {
-			$bestHandler($request);
-		} else {
-			$bestHandler->handle($request);
-		}
+		//call the handler
+		$bestHandler($request);
 	}
 }

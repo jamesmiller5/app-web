@@ -1,4 +1,6 @@
 <?php
+//PHP traditionally uses global variables to handle HTTP request states
+//This class wraps around those variables in a sane way
 class Request extends ArrayObject {
 	public $post;
 	public $get;
@@ -143,6 +145,7 @@ class Request extends ArrayObject {
 	}
 }
 
+//Simple class to work with user uploaded files
 class PostFile extends SplFileObject {
 	public $name;
 	public $type;
@@ -165,7 +168,7 @@ class PostFile extends SplFileObject {
 	}
 
 	function moveTo( $destination ) {
+		//TODO: Does this work if called twice?
 		return move_uploaded_file( $this->tmp_name, $destination );
 	}
 }
-

@@ -37,7 +37,7 @@ class Profile extends Page {
 			}
 
 			if($this->success) {
-				$user->update();
+				$user->store();
 			}
 		}
 		//no errors? lets render!
@@ -97,7 +97,7 @@ HTML;
 HTML;
 	}
 }
-Router::getDefault()->register( "/profile", new Profile() );
+Router::getDefault()->register( "/profile", Page::pagify("Profile") );
 
 
 class ProfileView extends Page {
@@ -140,4 +140,4 @@ HTML;
 }
 
 //simple view others profile
-Router::getDefault()->register("/profile/view", new ProfileView() );
+Router::getDefault()->register("/profile/view", Page::pagify("ProfileView") );

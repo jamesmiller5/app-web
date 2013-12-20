@@ -38,24 +38,24 @@ class Trust extends Page {
 					} else {
 						if( $user == null ){
 							$this->message = "Please login first.";
-						} else { 
+						} else {
 							// User and subject are valid, insert into database.
 							$insert = DB::getPDO()->prepare(
 								"insert into citation values(:id,:subject,:description)"
 								);
 							$insert->execute(array(':id'=>NULL, ':subject'=>$request->post['subject'], ':description'=>$request->post['description']));
-							
+
 							// Get return object ID
 							$this->id = (int)DB::getPDO()->lastInsertId();
-							
+
 							// Create new Trust and store it
 							$insert2 = DB::getPDO()->prepare(
 								"insert into trust values(:trusterId,:trusteeId,:citeId)"
 								);
-							
+
 							//$this->message = "truster " . $user->id . "	trustee " . $ret2[0]['id'] . " cite	" . $this->id;
 							$insert2->execute(array(':trusterId'=>$user->id, ':trusteeId'=>$ret2[0]['id'], ':citeId'=>$this->id));
-							
+
 							$this->message = "Citation Created!";
 						}
 					}
@@ -91,4 +91,4 @@ class Trust extends Page {
 HTML;
 	}
 }
-Router::getDefault()->register( "/trust", new trust() );
+Router::getDefault()->register( "/trust", Page::pagify("trust") );

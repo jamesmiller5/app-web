@@ -1,5 +1,16 @@
 <?php
 class Page {
+	static function pagify( $class ) {
+		if( class_exists( $class ) ) {
+			return function($request) use ($class) {
+				$page = new $class();
+				$page->handle( $request );
+			};
+		}
+
+		throw new Exception( __FILE__ . ":" . __FUNCTION__ . " can't find the class '{$class}' to pagify");
+	}
+
 	function handle(Request $request) {
 		throw new LogicException( __FILE__ . ":" . __FUNCTION__ . " shouldn't be called, extended only" );
 	}

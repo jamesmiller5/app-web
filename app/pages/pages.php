@@ -31,7 +31,7 @@ HTML;
 	}
 }
 //register this class as the default page aka '/'
-Router::getDefault()->register( "/", new Index() );
+Router::getDefault()->register( "/", Page::pagify("Index") );
 
 //include other pages, use a full path to avoid weirdness
 require APPDIR . "app/pages/login.php";
@@ -70,7 +70,7 @@ class Demo extends Page {
 HTML;
 	}
 }
-Router::getDefault()->register( "/demo", new Demo() );
+Router::getDefault()->register( "/demo", Page::pagify("Demo") );
 
 class Test extends Page {
 	function handle(Request $request) {
@@ -121,5 +121,5 @@ HTML;
 	}
 }
 //register this class as the default page aka '/'
-Router::getDefault()->register( "/test", new Test() );
+Router::getDefault()->register( "/test", Page::pagify("Test") );
 
