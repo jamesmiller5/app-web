@@ -19,14 +19,13 @@ class Index extends Page {
 
 		if( $name ) {
 		echo <<<HTML
-		<h1>Hi "{$name}", this is the Index Page</h1>
+		<h1>Hi {$name}, Welcome to APP.</h1>
+		<h2>Use the menu above to explore your network and make connections.</h2>
 HTML;
 		} else {
 		echo <<<HTML
 		<h1>Welcome to APP.</h1>
-		<h2>More functionality coming soon.</h2>
 		<p>If you don't have an account, please <a href="/register">register</a>.</p>
-
 HTML;
 		}
 	}
@@ -88,12 +87,12 @@ class Test extends Page {
 		$newuser->store();
 		$user = User::login("test@testing", "pass");
 		$newuser->remove();
-		
+
 		//subject function tests
 		$subject = new Subject();
 		$subject->subName = "Math";
 		$subject->store();
-		
+
 		//test the Citation functions
 		$citation = new Citation();
 		$citation->subject = "Math";
@@ -104,20 +103,20 @@ class Test extends Page {
 		$newcit = new Citation();
 		$newcit->load($citation->id);
 		var_dump($newcit);
-		
+
 		$citation->remove();
 		$subject->remove();
-		
+
 		if( $user )
 			$email = htmlentities($user->email);
-		
+
 		echo <<<HTML
 		<h1> Hi this is the Test Page id:"{$email}" </h1>
 		<h1> Login verifies that User->load is working </h1>
 		<h1> The subject was inserted and removed correctly </h1>
 		<h1> The first 2 var_dumps should match to confirm citation functions </h1>
 		<h1> refresh to check that the remove functions worked correctly </h1>
-		
+
 HTML;
 	}
 }
