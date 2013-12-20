@@ -32,6 +32,7 @@ class Session {
 		}
 
 		if( session_status() != PHP_SESSION_ACTIVE ) {
+			//error, can't turn session handling on
 			return false;
 		}
 
@@ -73,20 +74,27 @@ class User {
 	public $title;
 	public $website;
 
-	function update() {
+	static function login( $email, $password ) {
+		//do query
+		//fetch the results and set our instance variables to them
 		$statement = DB::getPDO()->prepare(
-			"UPDATE user SET password=:password, email=:email, name=:name, company=:company, title=:title, website=:website WHERE id=:id;"
+			"SELECT id FROM user WHERE email = :email AND password = :password"
 		);
-
-		$ret = $statement->execute( array(
-			":id" => $this->id,
-			":email" => $this->email,
-			":password" => $this->password,
-			":name" => $this->name,
-			":company" => $this->company,
-			":title" => $this->title,
-			":website" => $this->website
+		$statement->execute( array(
+			":email" => $email,
+			":password" => $password,
 		) );
+
+		$ret = $statement->fetch();
+		if( $ret ) {
+			//$ret['id'] is the id we want
+			$user = new User();
+			if( $user->load($ret['id']) ) {
+				return $user;
+			}
+		}
+
+		return null;
 	}
 
 	function load($id) {
@@ -111,46 +119,39 @@ class User {
 			$statement = DB::getPDO()->prepare(
 				"INSERT INTO user VALUES (:id, :email, :password, null, null, null, null);"
 			);
-		} else {
-			$statement = DB::getPDO()->prepare(
-				"UPDATE user SET password=:password, email=:email WHERE id=:id;"
-			);
-		}
 
-		$ret = $statement->execute( array(
-			":id" => $this->id,
-			":email" => $this->email,
-			":password" => $this->password,
-		) );
+			$ret = $statement->execute( array(
+				":id" => $this->id,
+				":email" => $this->email,
+				":password" => $this->password,
+			) );
+		} else {
+			$statement = DB::getPDO()->prepare( "
+				UPDATE
+					user
+				SET
+					password=:password, email=:email, name=:name,
+					company=:company, title=:title, website=:website
+				WHERE
+					id=:id;"
+			);
+
+			$ret = $statement->execute( array(
+				":id" => $this->id,
+				":email" => $this->email,
+				":password" => $this->password,
+				":name" => $this->name,
+				":company" => $this->company,
+				":title" => $this->title,
+				":website" => $this->website
+			) );
+		}
 
 		//grab the unique id from insertion if we created a new row
 		if( $this->id == null && $ret )
 			$this->id = (int)DB::getPDO()->lastInsertId();
 	}
 
-	static function login( $email, $password ) {
-		//do query
-		//fetch the results and set our instance variables to them
-		$statement = DB::getPDO()->prepare(
-			"SELECT id FROM user WHERE email = :email AND password = :password"
-		);
-		$statement->execute( array(
-			":email" => $email,
-			":password" => $password,
-		) );
-
-		$ret = $statement->fetch();
-		if( $ret ) {
-			//$ret['id'] is the id we want
-			$user = new User();
-			if( $user->load($ret['id']) ) {
-				return $user;
-			}
-		}
-
-		return null;
-	}
-	
 	function remove() {
 		//make sure the citation exists
 		if( (int)$this->id != 0 ) {
@@ -158,7 +159,7 @@ class User {
 				"DELETE FROM User WHERE id = :id;"
 			);
 		}
-		
+
 		$ret = $statement->execute( array(
 			":id" => $this->id,
 		) );
@@ -170,7 +171,7 @@ class Citation {
 	public $subject;	//string, foreign key
 	public $description;	//string
 	public $source;		//string
-	
+
 	function load($id) {
 		//fetch results and set equal to instance variables
 		$statement = DB::getPDO()->prepare(
@@ -185,7 +186,7 @@ class Citation {
 
 		return $ret;
 	}
-	
+
 	function store() {
 		//citation does not exist in table, insert it
 		if( (int)$this->id == 0 ) {
@@ -211,7 +212,7 @@ class Citation {
 		if( $this->id == null && $ret )
 			$this->id = (int)DB::getPDO()->lastInsertId();
 	}
-	
+
 	function remove() {
 		//make sure the citation exists
 		if( (int)$this->id != 0 ) {
@@ -219,7 +220,7 @@ class Citation {
 				"DELETE FROM Citation WHERE id = :id;"
 			);
 		}
-		
+
 		$ret = $statement->execute( array(
 			":id" => $this->id,
 		) );
@@ -230,7 +231,7 @@ class Trustent {
 	public $trusterId;	//int
 	public $trusteeId;	//int
 	public $citeId;		//int
-	
+
 	function trusterload($trusterId) {
 		//fetch results and set equal to instance variables
 		$statement = DB::getPDO()->prepare(
@@ -245,7 +246,7 @@ class Trustent {
 
 		return $ret;
 	}
-	
+
 	function trusteeload($trusteeId) {
 		//fetch results and set equal to instance variables
 		$statement = DB::getPDO()->prepare(
@@ -260,7 +261,7 @@ class Trustent {
 
 		return $ret;
 	}
-	
+
 	function citeload($citeId) {
 		//fetch results and set equal to instance variables
 		$statement = DB::getPDO()->prepare(
@@ -275,27 +276,27 @@ class Trustent {
 
 		return $ret;
 	}
-	
+
 	function store() {
 		//trust edge does not exist in table, insert it
 		//trust edges should not be updated only inserted and removed
 		$statement = DB::getPDO()->prepare(
 			"INSERT INTO Trust VALUES (:trusterId, :trusteeId, :citeId);"
 		);
-		
+
 		$ret = $statement->execute( array(
 			":trusterId" => $this->trusterId,
 			":trusteeId" => $this->trusteeId,
 			":citeId" => $this->citeId,
 		) );
 	}
-	
+
 	function remove() {
 		//remove a trust edge from the table
 		$statement = DB::getPDO()->prepare(
 			"DELETE FROM Trust WHERE trusterId = :trusterId AND trusteeId = :trusteeId AND citeId = :citeId;"
 		);
-		
+
 		$ret = $statement->execute( array(
 			":trusterId" => $this->trusterId,
 			":trusteeId" => $this->trusteeId,
@@ -306,26 +307,26 @@ class Trustent {
 
 class Subject {
 	public $subName;
-	
+
 	//Subject class does not need a load function since there's only one column
-	
+
 	function store() {
 		//subject does not exist, insert it
 		$statement = DB::getPDO()->prepare(
 			"INSERT INTO Subject VALUES (:name);"
 		);
-		
+
 		$ret = $statement->execute( array(
 			":name" => $this->subName,
 		) );
 	}
-	
+
 	function remove() {
 		//remove a subject from the table
 		$statement = DB::getPDO()->prepare(
 			"DELETE FROM Subject WHERE name = :name;"
 		);
-		
+
 		$ret = $statement->execute( array(
 			":name" => $this->subName,
 		) );
